@@ -1,0 +1,1482 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="https://drawaria.online/primary.css" />
+    <link rel="stylesheet" href="https://drawaria.online/3rd/lib/pickr/themes/classic.min.css" />
+    <link rel="stylesheet" href="https://drawaria.online/pageres/avataranimations.css" />
+    <link rel="shortcut icon" href="https://drawaria.online/favicon.ico" type="image/x-icon" />
+    <style>
+      #chatbox_messages {
+        white-space: normal;
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+      crossorigin="anonymous"
+    />
+
+    <title>Engine</title>
+  </head>
+
+  <body>
+    <div id="main" style="padding-top: 2em; position: relative">
+      <div style="display: flex; justify-content: center">
+        <div id="leftbar">
+          <div style="display: flex; flex-direction: column; height: 100%; justify-content: space-between">
+            <div>
+              <div id="playerlist" style="font-size: 1em"></div>
+              <div
+                id="cyclestatus"
+                style="text-align: center; user-select: none; margin-top: 1em; display: none"
+                title=""
+                data-original-title="Match: 0 / Round: 0"
+              >
+                ⚪
+              </div>
+            </div>
+            <div style="padding: 0.5em 2em 1em" id="votingbox">
+              <button type="button" class="btn btn-outline-dark btn-lg btn-block" style="font-size: 0.6rem">
+                RESET DRAWING
+              </button>
+            </div>
+            <div style="padding: 0.5em 2em 1em; display: none" id="passturnbutton">
+              <button type="button" class="btn btn-outline-dark btn-lg btn-block">Pass!</button>
+            </div>
+          </div>
+        </div>
+        <canvas
+          id="canvas"
+          style="background: white; touch-action: none; user-select: none"
+          touch-action="none"
+          class="canvas-drawer"
+          width="800"
+          height="700"
+        ></canvas>
+        <div id="rightbar">
+          <div class="timer" style="top: -1.5em; left: -6em; z-index: 2000; display: none">
+            <div class="timer-bg"></div>
+            <div class="timer-barbg"></div>
+            <div class="timer-bar">
+              <svg viewBox="0 0 100 100" style="display: block; width: 100%">
+                <path
+                  d="M50 50m0-43a43 43 0 1 1 0 86 43 43 0 1 1 0-86"
+                  stroke="rgb(195, 228, 25)"
+                  stroke-width="14"
+                  fill-opacity="0"
+                  style="stroke-dasharray: 295.416, 295.416; stroke-dashoffset: 295.416"
+                ></path>
+              </svg>
+            </div>
+            <div class="timer-face">
+              <div class="timer-text">0</div>
+            </div>
+          </div>
+          <div class="col" id="roomcontrols">
+            <div class="row" style="padding-bottom: 0.5em">
+              <button
+                class="btn btn-outline-secondary btn-sm type="
+                style="padding: 1px 10px"
+                id="roomcontrols-menu"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                data-reference="toggle"
+              >
+                <i class="fas fa-ellipsis-v"> </i>
+              </button>
+              <div
+                class="dropdown-menu dropdown-menu-right"
+                aria-labelledby="roomcontrols-menu"
+                style="padding: 0.5em; z-index: 3000"
+              >
+                <div id="infotext" style="font-size: 0.8em; text-align: center; margin-bottom: 1em; color: gray">
+                  <div>Playground / max 10 players</div>
+                  <div>Stencils</div>
+                  <div>Private room</div>
+                </div>
+                <button id="togglesounds" type="button" class="btn btn-light btn-sm btn-block">
+                  <i class="fas fa-volume-off"> </i>
+                  <span>Toggle sounds</span>
+                </button>
+                <button id="togglefullscreen" type="button" class="btn btn-light btn-sm btn-block">
+                  <i class="far fa-window-maximize"> </i>
+                  <span>Toggle fullscreen</span>
+                </button>
+                <div class="dropdown-divider"></div>
+                <button id="downloadcanvas" type="button" class="btn btn-light btn-sm btn-block">
+                  <i class="far fa-arrow-alt-circle-down"> </i>
+                  <span>Download this drawing</span>
+                </button>
+                <button id="downloadsavedcanvas" type="button" class="btn btn-light btn-sm btn-block">
+                  <i class="fas fa-arrow-alt-circle-down"> </i>
+                  <span>Download your latest drawing</span>
+                </button>
+                <div class="dropdown-divider"></div>
+                <button id="sendtogallery" type="button" class="btn btn-light btn-sm btn-block">
+                  <i class="fas fa-cloud-upload-alt"> </i>
+                  <span>Send your latest drawing to gallery</span>
+                  <span id="gallerystats" style="display: none"> </span>
+                  <div class="spinner-border" role="status" style="display: none"></div>
+                </button>
+                <h6 class="dropdown-header" style="display: none"></h6>
+                <div id="drawsettings" style="display: none">
+                  <style>
+                    #roomcontrols .custom-control.custom-checkbox {
+                      padding-left: 0;
+                    }
+                    #roomcontrols label.custom-control-label {
+                      position: relative;
+                      padding-right: 1.5rem;
+                    }
+                    #roomcontrols label.custom-control-label::before,
+                    #roomcontrols label.custom-control-label::after {
+                      right: 0;
+                      left: auto;
+                    }
+                  </style>
+                </div>
+                <div id="autosavecontrols" style="display: none">
+                  <div class="dropdown-divider"></div>
+                  <h6 class="dropdown-header" style="text-align: center">Autosave interval (minutes):</h6>
+                  <select class="form-control form-control-sm" id="autosaveinterval">
+                    <option value="-1">-</option>
+                    <option value="1">1</option>
+                    <option value="3">3</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                  </select>
+                </div>
+                <div id="roomcontrols-musicbox">
+                  <div class="dropdown-divider"></div>
+                  <button id="showtracksdlg" type="button" class="btn btn-light btn-sm btn-block">
+                    <i class="fas fa-play-circle"> </i>
+                    <span>Tracks...</span>
+                  </button>
+                  <button id="mutetrack" type="button" class="btn btn-light btn-sm btn-block">
+                    <i class="fas fa-stop"> </i>
+                    <span>Mute current track</span>
+                  </button>
+                  <div style="display: flex; align-items: center; white-space: nowrap; margin: 0.2em; font-size: 0.9em">
+                    <div style="margin-right: 0.5em">Music volume:</div>
+                    <input
+                      type="range"
+                      class="custom-range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      value="1"
+                      id="musicbox-volumecontrol"
+                      autocomplete="false"
+                    />
+                  </div>
+                </div>
+                <div id="roomcontrols-pixelart" style="display: none">
+                  <div class="dropdown-divider"></div>
+                  <div style="display: flex; align-items: center; white-space: nowrap; margin: 0.2em; font-size: 0.9em">
+                    <div style="margin-right: 0.5em">Grid:</div>
+                    <input
+                      type="range"
+                      class="custom-range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      value="1"
+                      id="grid-slider"
+                      autocomplete="false"
+                    />
+                  </div>
+                </div>
+                <button
+                  id="showextmenu"
+                  type="button"
+                  class="btn btn-light btn-sm btn-block"
+                  style="background: rgb(255, 255, 255); text-align: center; padding: 0px; border: medium none"
+                >
+                  <i class="fas fa-caret-down"> </i>
+                </button>
+              </div>
+              <div style="flex: auto">
+                <button
+                  id="playgroundroom_next"
+                  type="button"
+                  class="btn btn-outline-secondary btn-sm btn-block"
+                  style="padding: 1px 5px; margin: auto; max-width: 5em"
+                  title=""
+                  data-placement="right"
+                  data-original-title="Go next playground room"
+                >
+                  <i class="fas fa-forward"> </i>
+                </button>
+              </div>
+              <a
+                href="/"
+                class="btn btn-outline-secondary btn-sm"
+                style="padding: 1px 5px"
+                title=""
+                id="homebutton"
+                data-original-title="Return to home page"
+              >
+                <i class="fas fa-home"> </i>
+              </a>
+            </div>
+          </div>
+          <div
+            class="invbox"
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              background: #e1e1e1;
+              padding: 0.5em;
+              border-radius: 7px;
+            "
+          >
+            <span style="font-size: 0.8em; color: gray; padding-right: 0.5em; user-select: none">Invitation:</span>
+            <input
+              type="text"
+              class="form-control"
+              id="invurl"
+              title=""
+              data-delay="300"
+              style="
+                padding: 0.1em;
+                margin: 0;
+                height: inherit;
+                border: none;
+                width: 100%;
+                cursor: pointer;
+                font-size: 0.8em;
+              "
+              readonly=""
+              autocomplete="false"
+              value="https://drawaria.online/room/e2942965-db85-4d1c-9abc-3701ffddde20.3"
+              data-original-title="Click to copy Invitation Link to clipboard"
+            />
+          </div>
+          <div id="accountbox">
+            <div class="accountbox-topbar">
+              <div class="accountbox-inventorybutton">
+                <i class="fas fa-box"> </i>
+              </div>
+            </div>
+          </div>
+          <div style="border-top: 1px solid #cde5ff; height: 5px; margin-top: 5px">
+            <div id="clearchatbutton" style="display: none">
+              <button class="btn btn-outline-secondary btn-sm btn-block" type="button">
+                <i class="fas fa-trash-alt"> </i>
+              </button>
+            </div>
+          </div>
+          <div id="chatbox_messages" style1="width: 100%; height: 100%; overflow-y: scroll; word-wrap: break-word;">
+            <div class="chatmessage systemchatmessage" data-ts="1679848456312">Private room</div>
+            <div class="chatmessage systemchatmessage" data-ts="1679848456334">Autosave interval: 5m</div>
+          </div>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              id="chatbox_textinput"
+              style="border: 1px solid aqua"
+              maxlength="100"
+              placeholder="Chat"
+              autocomplete="false"
+            />
+            <div class="input-group-append">
+              <button id="gesturespickerbutton" class="btn btn-outline-secondary" type="button">
+                <i class="fas fa-star"> </i>
+              </button>
+              <div id="gesturespickerselector">
+                <div class="gesturespicker-container">
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-db71003aad95.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-47669e16a3d8.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-24b893f855c0.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-d402901a06fe.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-45ae99c41cd5.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-f65dd98ef094.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-4adb0ab9c585.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-d5b70ebd8087.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-bb0dfb9f448d.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-dc75a16ba7ca.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-97414e759778.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-d9c87743a43f.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-928fdfaf0aa3.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-e606a5c08e97.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-82c8345f6b6e.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-a3d2b8fa892e.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-4606d2bc27e1.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-779847d64ad3.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-c602ed1758dc.png" />
+                  </div>
+                  <div class="gesturespicker-item">
+                    <img src="https://drawaria.online/img/gestures/ezgif-1-87044c6534f9.png" />
+                  </div>
+                  <div
+                    class="gesturespicker-item gesturespicker-spawnedavataritem gesturespicker-spawnedavataritem-sep"
+                    data-avataranim="vibrate-3"
+                    style="display: none"
+                  >
+                    vibrate
+                  </div>
+                  <div
+                    class="gesturespicker-item gesturespicker-spawnedavataritem gesturespicker-spawnedavataritem-sep"
+                    data-avataranim="shake-lr"
+                    style="display: none"
+                  >
+                    shake
+                  </div>
+                  <div
+                    class="gesturespicker-item gesturespicker-spawnedavataritem gesturespicker-spawnedavataritem-sep"
+                    data-avataranim="shake-horizontal"
+                    style="display: none"
+                  >
+                    shake
+                  </div>
+                  <div
+                    class="gesturespicker-item gesturespicker-spawnedavataritem gesturespicker-spawnedavataritem-sep"
+                    data-avataranim="shake-vertical"
+                    style="display: none"
+                  >
+                    shake
+                  </div>
+                  <div
+                    class="gesturespicker-item gesturespicker-spawnedavataritem"
+                    data-avataranim="pulsate-fwd"
+                    style="display: none"
+                  >
+                    pulsate
+                  </div>
+                  <div
+                    class="gesturespicker-item gesturespicker-spawnedavataritem"
+                    data-avataranim="wobble-ver-right"
+                    style="display: none"
+                  >
+                    wobble
+                  </div>
+                  <div
+                    class="gesturespicker-item gesturespicker-spawnedavataritem"
+                    data-avataranim="wobble-ver-left"
+                    style="display: none"
+                  >
+                    wobble
+                  </div>
+                  <div
+                    class="gesturespicker-item gesturespicker-spawnedavataritem"
+                    data-avataranim="wobble-hor-bottom"
+                    style="display: none"
+                  >
+                    wobble
+                  </div>
+                  <div
+                    class="gesturespicker-item gesturespicker-spawnedavataritem"
+                    data-avataranim="rotate-center"
+                    style="display: none"
+                  >
+                    rotate
+                  </div>
+                  <div
+                    class="gesturespicker-item gesturespicker-spawnedavataritem"
+                    data-avataranim="rotate-center2"
+                    style="display: none"
+                  >
+                    rotate
+                  </div>
+                  <div
+                    class="gesturespicker-item gesturespicker-spawnedavataritem"
+                    data-avataranim="jello-horizontal"
+                    style="display: none"
+                  >
+                    jello
+                  </div>
+                  <div
+                    class="gesturespicker-item gesturespicker-spawnedavataritem"
+                    data-avataranim="jello-vertical"
+                    style="display: none"
+                  >
+                    jello
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="ratedrawerbox" style="display: none">
+            <div class="ratedrawerbox-button">
+              <div></div>
+            </div>
+          </div>
+          <div
+            id="canvasspinner"
+            class="spinner-border"
+            role="status"
+            style="position: absolute; bottom: 10px; left: -3rem; background: white; display: none"
+          ></div>
+        </div>
+      </div>
+      <div>
+        <div id="stencilsbuttons" style="left: 524px; top: 461px" hidden>
+          <div>
+            <button class="btn btn-warning" type="button" style="margin-right: 1em" data-action="2">
+              <i class="fas fa-parachute-box"> </i>
+            </button>
+            <button class="btn btn-warning" type="button" data-action="1">
+              <i class="fas fa-spray-can"> </i>
+            </button>
+            <span class="inkamount">
+              <span>Ink:</span>
+              <span>100/99</span>
+            </span>
+            <button class="btn btn-outline-secondary" type="button">
+              <i class="fas fa-times"> </i>
+            </button>
+          </div>
+          <div>
+            <div class="btn-group btn-group-sm" style="width: 100%; margin-top: 0.5em">
+              <button class="btn btn-outline-info" type="button" data-prop="color">
+                <i class="fas fa-brush"> </i>
+              </button>
+              <button class="btn btn-outline-info" type="button" data-prop="hmirror">
+                <i class="fas fa-arrows-alt-h"> </i>
+              </button>
+              <button class="btn btn-outline-info" type="button" data-prop="vmirror">
+                <i class="fas fa-arrows-alt-v"> </i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="chatattop-container" style="display: none">
+          <div id="chatattop-sendbutton" class="chatattop-button">
+            <i class="fas fa-arrow-right"> </i>
+          </div>
+          <div id="chatattop-history" style="display: none"></div>
+          <div id="chatattop-newmessage" style="display: none"></div>
+          <div id="expandedmode-togglebutton" class="buttonrightedge">
+            <button class="btn btn-outline-primary" type="button">
+              <i class="fas fa-expand"> </i>
+            </button>
+          </div>
+          <div id="expandedmode-dragcanvasbutton" class="buttonrightedge">
+            <button class="btn btn-outline-secondary" type="button">
+              <i class="fas fa-arrows-alt"> </i>
+            </button>
+          </div>
+          <div id="expandedmode-toggleleftbar" class="buttonrightedge">
+            <button class="btn btn-outline-secondary" type="button">
+              <i class="fas fa-bars"> </i>
+            </button>
+          </div>
+        </div>
+        <div id="drawcontrols" class="drawcontrols-edgepos">
+          <div
+            class="drawcontrols-button drawcontrols-color drawcontrols-arrow"
+            style="background: rgb(158, 1, 66)"
+            data-ctrlgroup="color"
+          ></div>
+          <div
+            class="drawcontrols-button drawcontrols-color drawcontrols-snapbutton"
+            style="background: rgb(208, 56, 78)"
+            data-ctrlgroup="color"
+          >
+            <span>↕️</span>
+          </div>
+          <div
+            class="drawcontrols-button drawcontrols-color"
+            style="background: rgb(238, 100, 69)"
+            data-ctrlgroup="color"
+          ></div>
+          <div
+            class="drawcontrols-button drawcontrols-color"
+            style="background: rgb(251, 156, 89)"
+            data-ctrlgroup="color"
+          ></div>
+          <div
+            class="drawcontrols-button drawcontrols-color"
+            style="background: rgb(254, 206, 124)"
+            data-ctrlgroup="color"
+          ></div>
+          <div
+            class="drawcontrols-button drawcontrols-color"
+            style="background: rgb(255, 241, 167)"
+            data-ctrlgroup="color"
+          ></div>
+          <div
+            class="drawcontrols-button drawcontrols-color"
+            style="background: rgb(244, 250, 173)"
+            data-ctrlgroup="color"
+          ></div>
+          <div
+            class="drawcontrols-button drawcontrols-color"
+            style="background: rgb(209, 236, 156)"
+            data-ctrlgroup="color"
+          ></div>
+          <div
+            class="drawcontrols-button drawcontrols-color"
+            style="background: rgb(152, 214, 164)"
+            data-ctrlgroup="color"
+          ></div>
+          <div
+            class="drawcontrols-button drawcontrols-color"
+            style="background: rgb(93, 183, 169)"
+            data-ctrlgroup="color"
+          ></div>
+          <div
+            class="drawcontrols-button drawcontrols-color"
+            style="background: rgb(54, 131, 187)"
+            data-ctrlgroup="color"
+          ></div>
+          <div
+            class="drawcontrols-button drawcontrols-color drawcontrols-colorpicker drawcontrols-toolstoggle"
+            style="background: rgb(94, 79, 162); box-shadow: rgba(0, 0, 0, 0.5) 0.1em 0em 0.1em; position: relative"
+            data-ctrlgroup="color"
+          >
+            <div
+              class="drawcontrols-dialogbutton"
+              style="bottom: 1px"
+              title=""
+              data-placement="bottom"
+              data-original-title="Show palettes"
+            >
+              <i class="fas fa-ellipsis-h"> </i>
+            </div>
+            <span> </span>
+          </div>
+          <div
+            class="drawcontrols-button drawcontrols-sep"
+            data-ctrlgroup="drawwidth"
+            data-placement="bottom"
+            title=""
+            style="display: none"
+            data-original-title="Brush size"
+          >
+            <div class="drawcontrols-circle" style="height: 45px; width: 45px; background-color: rgb(158, 1, 66)"></div>
+          </div>
+          <div
+            class="drawcontrols-button drawcontrols-arrow"
+            data-ctrlgroup="drawwidth"
+            data-placement="bottom"
+            title=""
+            style="display: none"
+            data-original-title="Brush size"
+          >
+            <div class="drawcontrols-circle" style="height: 12px; width: 12px; background-color: rgb(158, 1, 66)"></div>
+          </div>
+          <div
+            class="drawcontrols-button drawcontrols-widthtoggle"
+            data-ctrlgroup="drawwidth"
+            data-placement="bottom"
+            title=""
+            style="display: none"
+            data-original-title="Brush size"
+          >
+            <div class="drawcontrols-circle" style="height: 5px; width: 5px; background-color: rgb(158, 1, 66)"></div>
+            <span> </span>
+          </div>
+          <div
+            class="drawcontrols-button drawcontrols-sep drawcontrols-widthtoggle"
+            style="width: 156px; padding: 0px 5px"
+            data-ctrlgroup="drawwidthslider"
+            data-placement="bottom"
+          >
+            <input
+              type="range"
+              class="custom-range"
+              id="drawwidthrange"
+              min="5"
+              max="45"
+              value="33"
+              autocomplete="false"
+            />
+            <span> </span>
+            <div
+              class="drawcontrols-dialogbutton"
+              style="bottom: 1px; right: 1px"
+              title=""
+              data-placement="bottom"
+              data-original-title="Pressure settings"
+            >
+              <i class="fas fa-ellipsis-h"> </i>
+            </div>
+          </div>
+          <div
+            class="drawcontrols-button drawcontrols-sep drawcontrols-withpopup drawcontrols-arrow"
+            data-ctrlgroup="tool"
+            data-placement="bottom"
+            title=""
+            data-popupbuttonid="marker"
+            data-original-title="Marker"
+          >
+            <i class="fas fa-pencil-alt"> </i>
+            <div class="drawcontrols-popuplist" style="display: none">
+              <div class="drawcontrols-popupbutton" data-buttonid="line">
+                <i class="fas fa-pencil-alt"> </i>
+                <span>Marker</span>
+              </div>
+              <div class="drawcontrols-popupbutton" data-buttonid="aliasedline" data-linetype="1">
+                <i class="fas fa-pen"> </i>
+                <span>Marker (not antialiased)</span>
+              </div>
+              <div class="drawcontrols-popupbutton" data-buttonid="brush" data-linetype="2" adv="">
+                <i class="fas fa-paint-brush"> </i>
+                <span>Ink Brush</span>
+              </div>
+              <div class="drawcontrols-settingscontainer">
+                <div class="drawcontrols-settingstab buttonid-common" adv="">
+                  <div class="drawcontrols-rangeoption">
+                    <div id="option-colorflow">Color Flow:</div>
+                    <input
+                      type="range"
+                      class="custom-range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      value="0"
+                      data-localprop="colorflow"
+                      autocomplete="false"
+                    />
+                  </div>
+                  <div class="drawcontrols-selectoption" id="option-colorautochange">
+                    <div>Change Color:</div>
+                    <select class="form-control form-control-sm" data-localprop="colorautochange">
+                      <option value="0">-</option>
+                      <option value="1">Change randomly</option>
+                      <option value="2">Change sequentially</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="drawcontrols-settingstab buttonid-line buttonid-brush buttonid-aliasedline" adv="">
+                  <div class="drawcontrols-selectoption" id="option-symmetry">
+                    <div>Symmetry:</div>
+                    <select class="form-control form-control-sm" data-extprop="2">
+                      <option value="0" class="option-symmetry-common">-</option>
+                      <option value="1" class="option-symmetry-common">Horizontal Mirroring</option>
+                      <option value="2" class="option-symmetry-common">Vertical Mirroring</option>
+                      <option value="3" class="option-symmetry-common">Diagonal Mirroring</option>
+                      <option value="102">2 Radial Sectors</option>
+                      <option value="202">2 Radial Sectors + Mirror</option>
+                      <option value="103">3 Radial Sectors</option>
+                      <option value="203">3 Radial Sectors + Mirror</option>
+                      <option value="104">4 Radial Sectors</option>
+                      <option value="204">4 Radial Sectors + Mirror</option>
+                      <option value="105">5 Radial Sectors</option>
+                      <option value="205">5 Radial Sectors + Mirror</option>
+                      <option value="106">6 Radial Sectors</option>
+                      <option value="206">6 Radial Sectors + Mirror</option>
+                      <option value="107">7 Radial Sectors</option>
+                      <option value="207">7 Radial Sectors + Mirror</option>
+                      <option value="108">8 Radial Sectors</option>
+                      <option value="208">8 Radial Sectors + Mirror</option>
+                      <option value="109">9 Radial Sectors</option>
+                      <option value="209">9 Radial Sectors + Mirror</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="drawcontrols-button drawcontrols-withpopup"
+            data-ctrlgroup="tool"
+            data-placement="bottom"
+            title=""
+            data-popupbuttonid="floodfill"
+            data-original-title="Flood fill / Color picker"
+          >
+            <i class="fas fa-fill-drip"> </i>
+            <span> </span>
+            <div class="drawcontrols-popuplist" style="display: none">
+              <div class="drawcontrols-popupbutton" data-buttonid="floodfill">
+                <i class="fas fa-fill-drip"> </i>
+                <span>Flood fill</span>
+              </div>
+              <div class="drawcontrols-popupbutton drawcontrols-popupbutton-border" data-buttonid="colorpicker">
+                <i class="fas fa-eye-dropper"> </i>
+                <span>Color picker</span>
+              </div>
+              <div class="drawcontrols-settingscontainer">
+                <div class="drawcontrols-settingstab buttonid-floodfill">
+                  <div class="custom-control custom-switch drawcontrols-switchoption">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="drawcontrols-floodfillsettings"
+                      checked=""
+                      data-localprop="floodfillswitch"
+                      autocomplete="false"
+                    />
+                    <label class="custom-control-label" for="drawcontrols-floodfillsettings"
+                      >Select previous tool</label
+                    >
+                  </div>
+                  <div class="drawcontrols-rangeoption">
+                    <div id="option-floodfilltolerance">Flood Fill Tolerance:</div>
+                    <input
+                      type="range"
+                      class="custom-range"
+                      min="0"
+                      max="255"
+                      step="1"
+                      value="45"
+                      data-localprop="floodfilltolerance"
+                      autocomplete="false"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="drawcontrols-button"
+            data-ctrlgroup="tool"
+            data-placement="bottom"
+            title=""
+            data-original-title="Eraser"
+          >
+            <i class="fas fa-eraser"> </i>
+          </div>
+          <div
+            class="drawcontrols-button drawcontrols-sep"
+            data-ctrlgroup="undo"
+            data-placement="bottom"
+            title=""
+            data-original-title="Undo action"
+          >
+            <i class="fas fa-undo-alt"> </i>
+          </div>
+          <div
+            class="drawcontrols-button"
+            data-ctrlgroup="clear"
+            data-placement="bottom"
+            title=""
+            data-original-title="Clear all"
+          >
+            <i class="fas fa-trash-alt"> </i>
+          </div>
+        </div>
+        <div id="waitplayersmsg" class="topbox" style="display: none">
+          <div class="topbox-content">Waiting for players...</div>
+        </div>
+        <div id="startingroundmsg" class="topbox" style="display: none">
+          <div class="topbox-content">Starting new match!</div>
+        </div>
+        <div id="waitselectmsg" class="topbox" style="display: none">
+          <div class="topbox-content">
+            <img class="topbox-avatar" src="" />
+            <span> </span>
+          </div>
+        </div>
+        <div
+          id="wordchooser"
+          class="modal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="wordchooser-title"
+          aria-hidden="true"
+          data-keyboard="false"
+          data-backdrop="static"
+        >
+          <div class="modal-dialog modal-lg" role="document" style="top: 7em">
+            <div
+              class="modal-content"
+              style="text-align: center; background-color: azure; box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3)"
+            >
+              <div class="modal-header" style="color: gray">
+                <h5 class="modal-title" id="wordchooser-title">Choose word:</h5>
+                <button type="button" id="wordchooser-refreshlist" class="btn btn-outline-info btn-sm">
+                  <i class="fas fa-sync-alt"> </i>
+                </button>
+              </div>
+              <div class="modal-body" style="text-transform: uppercase; font-size: 2em"></div>
+            </div>
+          </div>
+        </div>
+        <div id="targetword" class="topbox" style="display: none">
+          <div class="topbox-content topbox-content-targetword"></div>
+        </div>
+        <div id="targetword_tip" class="topbox" style="display: none">
+          <div class="topbox-content topbox-content-targetword" style="letter-spacing: 5px; font-weight: bold"></div>
+        </div>
+        <div id="targetword_guessedself" class="topbox" style="display: none">
+          <div class="topbox-content"></div>
+          <div class="topbox-content" style="font-size: 1em; background-color: #fbffad"></div>
+        </div>
+        <div id="turnabortedmsg" class="topbox" style="display: none">
+          <div class="topbox-content">
+            <img class="topbox-avatar" src="" />
+            <span> </span>
+          </div>
+        </div>
+        <div id="turnresults" class="topbox" style="display: none">
+          <div class="topbox-content">results</div>
+          <div class="topbox-content" style="background-color: #fffacb; padding: 0 0 0.5em 0">results1</div>
+        </div>
+        <div id="roundresults" class="topbox" style="display: none">
+          <div class="topbox-content" style="background: #fbffad; padding: 1em"></div>
+        </div>
+        <div
+          class="modal fade"
+          id="invitedlg"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="invitedlg-title"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="invitedlg-title">Invitation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <b>Share this link to invite people to this room:</b>
+                <div class="input-group mb-3" style="margin-top: 1em">
+                  <input
+                    type="text"
+                    id="invurl1"
+                    class="form-control"
+                    aria-label="Recipient's username"
+                    aria-describedby="invitedlg-copybutton"
+                    readonly=""
+                    autocomplete="false"
+                  />
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-warning"
+                      type="button"
+                      id="invitedlg-copybutton"
+                      title=""
+                      data-original-title="Copy link to clipboard"
+                    >
+                      Copy Link
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="modal fade"
+          id="reportdlg"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="reportdlg-title"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="reportdlg-title">Report</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div>
+                  <span>Is this player violates our</span>
+                  <a href="/rules" class="askunload">Rules</a>
+                  <span>? Choose the reason and add comments to report:</span>
+                </div>
+                <form>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Reason:</label>
+                    <select id="report-reason" class="custom-select" required="">
+                      <option value="">&nbsp;</option>
+                      <option value="hack">Hack / Exploit</option>
+                      <option value="bot">Bot</option>
+                      <option value="spam">Spamming</option>
+                      <option value="content">Inappropriate drawings / Offensive content</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="message-text" class="col-form-label">Comments:</label>
+                    <textarea class="form-control" id="report-comments" required="" maxlength="1000"> </textarea>
+                  </div>
+                  <button type="submit" style="display: none"></button>
+                </form>
+                <a href="/rules" class="askunload">Rules</a> <br />
+                <a href="https://discord.gg/XeVKWWs" target="_blank" id="discordlink">Discord Server</a>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Send report</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="modal fade"
+          id="pressureconfigdlg"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="pressureconfigdlg-title"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="pressureconfigdlg-title">
+                  Pressure input sensitivity (for graphic tablets)
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="form-row">
+                    <div class="col-8 d-flex align-items-center">
+                      <button class="btn btn-outline-info btn-sm mr-3" type="button" id="pressureconfigdlg-resetbutton">
+                        <i class="fas fa-sync"> </i>
+                      </button>
+                      <input
+                        type="range"
+                        class="custom-range"
+                        min="0"
+                        max="2"
+                        step="0.01"
+                        value="1"
+                        autocomplete="false"
+                      />
+                    </div>
+                    <div class="col-2">
+                      <input
+                        type="number"
+                        class="form-control"
+                        min="0"
+                        max="2"
+                        step="0.01"
+                        value="1"
+                        autocomplete="false"
+                      />
+                    </div>
+                    <div class="col-2 d-flex align-items-center">
+                      <select id="pressureconfigdlg-typesel" class="custom-select">
+                        <option value="1" selected="">^1</option>
+                        <option value="2">^2</option>
+                        <option value="3">^3</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-row mt-3">
+                    <div class="col">
+                      <div class="progress" style="height: 5em; user-select: none">
+                        <div
+                          class="progress-bar bg-warning"
+                          role="progressbar"
+                          style="transition: none; width: 0%"
+                          aria-valuenow="0"
+                          aria-valuemin="0"
+                          aria-valuemax="100"
+                        >
+                          0%
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="modal fade"
+          id="palettechooser"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="palettechooser-title"
+          aria-hidden="true"
+        >
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+            role="document"
+            style="height: calc(100% - 3.5rem)"
+          >
+            <div class="modal-content" style="height: calc(100% - 3.5rem); background: beige">
+              <div class="modal-header">
+                <h5 class="modal-title" id="palettechooser-title">Palettes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div
+                style="display: flex; justify-content: flex-end; align-items: center; padding: 1em; user-select: none"
+              >
+                <div class="custom-control custom-switch">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="palettechooser-editmode"
+                    autocomplete="false"
+                  />
+                  <label class="custom-control-label" for="palettechooser-editmode">Edit colors</label>
+                </div>
+                <div style="flex: 1"></div>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                  <button type="button" id="palettechooser-createpalette" class="btn btn-outline-primary btn-sm">
+                    Create
+                  </button>
+                  <a
+                    href="/palettes/"
+                    id="palettechooser-browse"
+                    class="btn btn-outline-secondary btn-sm"
+                    target="_blank"
+                    >Get</a
+                  >
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-outline-secondary btn-sm"
+                      type="button"
+                      id="palettechooser-rowmenu"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      style="border-top-left-radius: 0; border-bottom-left-radius: 0; border-left: none"
+                    >
+                      <i class="fas fa-ellipsis-v"> </i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="palettechooser-rowmenu">
+                      <button type="button" id="palettechooser-editjson" class="btn dropdown-item">
+                        Export/Import
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-body" style="overflow-y: auto; user-select: none; background: #ffffe5">
+                <div id="palettechooser-list" class="selmode-palettechooser-list">
+                  <div class="palettechooser-row">
+                    <span class="palettechooser-rowname">#1 Rainbow-Saturated</span>
+                    <div class="palettechooser-colorset mr-3">
+                      <div style="background: rgb(158, 1, 66)">
+                        <div
+                          id="palettechooser-colorpickerpos"
+                          style="width: 10px; height: 45px; pointer-events: none"
+                        ></div>
+                      </div>
+                      <div style="background: rgb(208, 56, 78)"></div>
+                      <div style="background: rgb(238, 100, 69)"></div>
+                      <div style="background: rgb(251, 156, 89)"></div>
+                      <div style="background: rgb(254, 206, 124)"></div>
+                      <div style="background: rgb(255, 241, 167)"></div>
+                      <div style="background: rgb(244, 250, 173)"></div>
+                      <div style="background: rgb(209, 236, 156)"></div>
+                      <div style="background: rgb(152, 214, 164)"></div>
+                      <div style="background: rgb(93, 183, 169)"></div>
+                      <div style="background: rgb(54, 131, 187)"></div>
+                      <div style="background: rgb(94, 79, 162)"></div>
+                    </div>
+                    <div class="dropdown" style="display: flex; align-items: center">
+                      <button
+                        class="btn btn-light"
+                        type="button"
+                        id="palettechooser-rowmenu2"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      >
+                        <i class="fas fa-ellipsis-v"> </i>
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="palettechooser-rowmenu2">
+                        <button type="button" class="dropdown-item palettechooser-rowmenu-rename">Rename</button>
+                        <button type="button" class="dropdown-item palettechooser-rowmenu-editjson">
+                          Export/Import
+                        </button>
+                        <div class="dropdown-divider"></div>
+                        <button type="button" class="dropdown-item palettechooser-rowmenu-setautoload">
+                          Set as starting
+                        </button>
+                        <div class="dropdown-divider"></div>
+                        <button type="button" class="dropdown-item palettechooser-rowmenu-delete">
+                          Delete this palette
+                        </button>
+                        <div class="dropdown-divider"></div>
+                        <button
+                          type="button"
+                          class="dropdown-item palettechooser-rowmenu-upload"
+                          style="font-weight: bold"
+                        >
+                          Share / Save palette on server
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <span style="font-size: 0.6em"
+                  >Hot keys: <b>F2</b> or <b>J</b> (in word drawing): open this panel, <b>0 - 9</b>: quick swtich
+                  bewteen palettes<br />
+                  Note: Palettes stored in browser's localstorage</span
+                >
+                <div style="flex: 1"></div>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="modal fade"
+          id="musictracks"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="musictracks-title"
+          aria-hidden="true"
+        >
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
+            role="document"
+            style="height: calc(100% - 3.5rem)"
+          >
+            <div class="modal-content" style="height: calc(100% - 3.5rem); background: beige">
+              <div class="modal-header">
+                <h5 class="modal-title" id="musictracks-title">Music Tracks</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div
+                class="modal-body"
+                style="overflow-y: auto; user-select: none; background: #ffffe5; display: flex; flex-direction: column"
+              >
+                <div>
+                  <span id="musictracks-current">Current:</span>
+                  <span class="musicbox-trackinfo"> </span>
+                  <button class="btn btn-outline-secondary btn-sm" type="button" id="musictracks-forward">
+                    <i class="fas fa-redo"> </i>
+                  </button>
+                </div>
+                <div id="musictracks-next">Next:</div>
+                <div id="musictracks-playlist">
+                  <table class="table table-hover table-sm table-borderless">
+                    <thead>
+                      <tr>
+                        <th scope="col">Votes</th>
+                        <th scope="col">Track</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <div id="musictracks-alltracks">All tracks:</div>
+                <div id="musictracks-tracklist">
+                  <table class="table table-hover table-sm table-borderless">
+                    <thead>
+                      <tr>
+                        <th scope="col">Track</th>
+                        <th scope="col">Played</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <div class="musictracks-newtrackbox">
+                  <div class="input-group mb-3" style="margin-top: 1em; margin-bottom: 0 !important">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="https://soundcloud.com/user/track"
+                      aria-label=""
+                      aria-describedby="musictracks-addnew"
+                      id="musictracks-urlinput"
+                      autocomplete="false"
+                    />
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="button" id="musictracks-addnew">Add</button>
+                      <button class="btn btn-outline-secondary" type="button" id="musictracks-search">
+                        <i class="fas fa-search"> </i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="modal"
+          id="inventorydlg"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="inventory-title"
+          style="display: none"
+          aria-hidden="true"
+        >
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl"
+            role="document"
+            style="height: calc(100% - 3.5rem)"
+          >
+            <div class="modal-content" style="height: calc(100% - 3.5rem); background: beige">
+              <div class="modal-header" style="padding-top: 0.5em; padding-bottom: 0.5em">
+                <h5 class="modal-title" id="inventory-title">Inventory Box</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div style="margin: 0.2em 0">
+                <select
+                  id="inventorydlg-modefilter"
+                  class="custom-select custom-select-sm"
+                  style="margin-left: 1em; width: auto"
+                >
+                  <option value="-1">-</option>
+                  <option value="2">Playground / Stencils</option>
+                </select>
+                <div class="accountbox-coins" style="float: right; margin-right: 1em; margin-top: 0.2em">
+                  <div
+                    class="coinicon"
+                    style="font-size: 0.007em; left: 0; top: 30em"
+                    title=""
+                    data-original-title="Coins is earned for drawing activities in public rooms"
+                  ></div>
+                  <div class="accountbox-coinsval">626</div>
+                  <div class="accountbox-addcoinsbutton" style="display: none">
+                    <i class="fas fa-plus-square"> </i>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="modal-body"
+                style="overflow-y: auto; user-select: none; background: #ffffe5; display: flex; padding: 0"
+              >
+                <div class="inventorydlg-leftpanel">
+                  <div style="text-align: center; color: #9e9e9e">My Items</div>
+                  <div class="inventorydlg-itemscontainer">
+                    <span
+                      class="accountbox-itemscontainer-slot itemfilter2 accountbox-itemdisabled accountbox-static"
+                      title=""
+                      data-itemid="100"
+                      data-original-title="Ink"
+                    >
+                      <div>
+                        <img src="https://drawaria.online/img/inventory/100.svg" />
+                        <div class="accountbox-itemsqty">99</div>
+                      </div>
+                    </span>
+                    <span
+                      class="accountbox-itemscontainer-slot accountbox-itemscontainer-groupslot itemfilter2"
+                      title=""
+                      data-itemid="63000"
+                      data-original-title="Robotics"
+                    >
+                      <div>
+                        <img src="https://drawaria.online/img/inventory/63001.svg" />
+                        <div class="accountbox-itemsqty"></div>
+                      </div>
+                    </span>
+                    <span
+                      class="accountbox-itemscontainer-slot accountbox-itemscontainer-groupslot itemfilter2"
+                      title=""
+                      data-itemid="86000"
+                      data-original-title="Computer"
+                    >
+                      <div>
+                        <img src="https://drawaria.online/img/inventory/86001.svg" />
+                        <div class="accountbox-itemsqty"></div>
+                      </div>
+                    </span>
+                  </div>
+                  <div class="inventorydlg-notloggedin-message" style="display: none">
+                    Inventory items are stored in player accounts<br />You need to
+                    <a href="/login">log into your account</a> to access your inventory
+                  </div>
+                </div>
+                <div class="inventorydlg-rightpanel">
+                  <div style="text-align: center; color: #9e9e9e">Shop</div>
+                  <div class="inventorydlg-shoplist">
+                    <div
+                      class="inventorydlg-shopitem itemfilter2"
+                      title=""
+                      data-itemid="101"
+                      data-original-title="Ink Refill (+100)"
+                    >
+                      <div class="inventorydlg-shopitemtitle">Ink Refill (+100)</div>
+                      <span class="accountbox-itemscontainer-slot">
+                        <div>
+                          <img src="https://drawaria.online/img/inventory/101.svg" style="width: 45%; margin: auto" />
+                        </div>
+                      </span>
+                      <div class="inventorydlg-pricetag">
+                        <img src="https://drawaria.online/img/coin.png" />
+                        <span>9</span>
+                      </div>
+                    </div>
+                    <div
+                      class="inventorydlg-shopitem itemfilter2"
+                      title=""
+                      data-itemid="102"
+                      data-original-title="x5 Ink Refill(+500)"
+                    >
+                      <div class="inventorydlg-shopitemtitle">x5 Ink Refill(+500)</div>
+                      <span class="accountbox-itemscontainer-slot">
+                        <div>
+                          <img src="https://drawaria.online/img/inventory/101.svg" style="width: 63%; margin: auto" />
+                        </div>
+                      </span>
+                      <div class="inventorydlg-pricetag">
+                        <img src="https://drawaria.online/img/coin.png" />
+                        <span>45</span>
+                      </div>
+                    </div>
+                    <div
+                      class="inventorydlg-shopitem itemfilter2"
+                      title=""
+                      data-itemid="103"
+                      data-original-title="x10 Ink Refill (+1000)"
+                    >
+                      <div class="inventorydlg-shopitemtitle">x10 Ink Refill (+1000)</div>
+                      <span class="accountbox-itemscontainer-slot">
+                        <div>
+                          <img src="https://drawaria.online/img/inventory/101.svg" />
+                        </div>
+                      </span>
+                      <div class="inventorydlg-pricetag">
+                        <img src="https://drawaria.online/img/coin.png" />
+                        <span>90</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="inventorydlg-groupview">
+                  <div class="inventorydlg-groupview-header">
+                    <span class="inventorydlg-groupview-title">
+                      <span style="font-weight: bold">Robotics</span>
+                      <span class="inventorydlg-groupview-button" style="display: none">
+                        <span style="margin-right: 0.2em">Single Item:</span>
+                        <img src="https://drawaria.online/img/coin.png" />
+                        <span> </span>
+                        <span style="margin-left: 2em; margin-right: 0.2em">All Items:</span>
+                        <img src="https://drawaria.online/img/coin.png" />
+                        <span> </span>
+                      </span>
+                    </span>
+                    <button type="button" class="close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <div class="inventorydlg-groupview-container">
+                    <div class="inventorydlg-groupview-item" title="Robotics 99" data-itemid="63100">
+                      <span>
+                        <div>
+                          <img src="https://drawaria.online/img/inventory/63100.svg" />
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="inventorydlg-addcoinsview" style="display: none">
+                  <div class="inventorydlg-addcoinsview-header">
+                    <span class="inventorydlg-addcoinsview-title">Coins</span>
+                    <button type="button" class="close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <div class="inventorydlg-addcoinsview-container">
+                    <div class="inventorydlg-addcoinsview-info1" style="font-size: 1.2em; margin-top: 1.2em">
+                      Coins is earned for drawing activities in public rooms!
+                    </div>
+                    <div class="inventorydlg-addcoinsview-info2" style="font-size: 1.2em; margin-top: 1.2em">
+                      Here is another way, watch the promo clip and get the free coins now!
+                    </div>
+                    <span class="inventorydlg-addcoinsview-videobutton">
+                      <div class="coinicon" style="font-size: 0.007em; left: 300em; top: 47em"></div>
+                      <span>+10</span>
+                      <i class="fas fa-film"> </i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal" id="extmenu" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm" role="document">
+            <div class="modal-content">
+              <div class="modal-body" style="text-align: center">
+                <button type="button" class="btn btn-info btn-block mb-3 extmenu-button" data-action="rollback">
+                  Rollback Canvas (5 minutes ago)
+                </button>
+                <button type="button" class="btn btn-info btn-block mb-3 extmenu-button" data-action="inventory">
+                  Open Inventory
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-info btn-block mb-3 extmenu-button"
+                  data-action="sendalert"
+                >
+                  Send Alert - only press this if canvas contains botted or explicit drawings
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-info btn-block mb-3 extmenu-button"
+                  data-action="showrules"
+                >
+                  Show rules message
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
