@@ -4,21 +4,21 @@ var DrawariaExtensionBundle = (() => {
   var z = Object.getOwnPropertyDescriptor;
   var $ = Object.getOwnPropertyNames;
   var j = Object.prototype.hasOwnProperty;
-  var G = (o, e) => {
-      for (var t in e) M(o, t, { get: e[t], enumerable: !0 });
+  var G = (i, e) => {
+      for (var t in e) M(i, t, { get: e[t], enumerable: !0 });
     },
-    V = (o, e, t, r) => {
+    V = (i, e, t, r) => {
       if ((e && typeof e == "object") || typeof e == "function")
         for (let n of $(e))
-          !j.call(o, n) &&
+          !j.call(i, n) &&
             n !== t &&
-            M(o, n, {
+            M(i, n, {
               get: () => e[n],
               enumerable: !(r = z(e, n)) || r.enumerable,
             });
-      return o;
+      return i;
     };
-  var K = (o) => V(M({}, "__esModule", { value: !0 }), o);
+  var K = (i) => V(M({}, "__esModule", { value: !0 }), i);
   var ae = {};
   G(ae, {
     DRAWARIA_RCON_BOOTSTRAP_SCRIPT_NAME: () => x,
@@ -100,12 +100,12 @@ var DrawariaExtensionBundle = (() => {
       }
     };
   var Y = /^[a-z0-9-]{36}$/iu;
-  function R(o) {
+  function R(i) {
     return {
       id: "avatar-image-patcher",
       route: (e) => e?.kind === "home" || e?.kind === "palettes",
       mount(e) {
-        return new C(e, o).mount();
+        return new C(e, i).mount();
       },
     };
   }
@@ -159,8 +159,8 @@ var DrawariaExtensionBundle = (() => {
         let r = t.indexOf("="),
           n = r === -1 ? t : t.slice(0, r),
           a = r === -1 ? "" : t.slice(r + 1),
-          i = this.#i(n.trim());
-        return (i && (e[i] = this.#i(a.trim())), e);
+          o = this.#i(n.trim());
+        return (o && (e[o] = this.#i(a.trim())), e);
       }, {});
     }
     #m(e) {
@@ -267,10 +267,10 @@ var DrawariaExtensionBundle = (() => {
         );
         return;
       }
-      let i = this.#n("avatarimagedata");
-      (this.#h(t, i),
-        i &&
-          this.#R(i).catch((s) => {
+      let o = this.#n("avatarimagedata");
+      (this.#h(t, o),
+        o &&
+          this.#R(o).catch((s) => {
             console.warn("Unable to update avatar image.", s);
           }));
     }
@@ -514,15 +514,15 @@ var DrawariaExtensionBundle = (() => {
         if (typeof t != "function") return;
         let r = t;
         if (!r[P]) {
-          let i = r.__drawariaOriginalIo ?? r,
+          let o = r.__drawariaOriginalIo ?? r,
             s = this,
             l = function (...p) {
-              let h = Reflect.apply(i, this, p);
+              let h = Reflect.apply(o, this, p);
               return (s.#u(h), h);
             };
           if (
             (Object.assign(l, r),
-            (l.__drawariaOriginalIo = i),
+            (l.__drawariaOriginalIo = o),
             (l[P] = !0),
             typeof r.connect == "function")
           ) {
@@ -554,10 +554,10 @@ var DrawariaExtensionBundle = (() => {
         if (t[N] || typeof t.emit != "function") return;
         let r = this;
         ((t.__drawariaOriginalEmit = t.emit),
-          (t.emit = function (a, ...i) {
+          (t.emit = function (a, ...o) {
             if ((r.#u(this), q.has(a)))
-              return t.__drawariaOriginalEmit?.call(this, a, ...i) ?? this;
-            let s = r.#f(r.#t, this, a, i, !0);
+              return t.__drawariaOriginalEmit?.call(this, a, ...o) ?? this;
+            let s = r.#f(r.#t, this, a, o, !0);
             return s
               ? (t.__drawariaOriginalEmit?.call(this, a, ...s.args) ?? this)
               : this;
@@ -566,8 +566,8 @@ var DrawariaExtensionBundle = (() => {
             ((t.__drawariaOriginalOnevent = t.onevent),
             (t.onevent = function (a) {
               r.#u(this);
-              let i = Array.isArray(a.data) ? a.data : [],
-                [s, ...l] = i;
+              let o = Array.isArray(a.data) ? a.data : [],
+                [s, ...l] = o;
               if (typeof s != "string") {
                 t.__drawariaOriginalOnevent?.call(this, a);
                 return;
@@ -582,8 +582,8 @@ var DrawariaExtensionBundle = (() => {
       #k(e, t, r, n) {
         let a = this.#f(this.#a, e, t, r);
         if (!a) return;
-        let i = this.#i.get(t) ?? [];
-        if (i.length > 0) for (let s of [...i]) s.call(e, ...a.args);
+        let o = this.#i.get(t) ?? [];
+        if (o.length > 0) for (let s of [...o]) s.call(e, ...a.args);
         else n(a.args);
         for (let s of [...(this.#n.get(t) ?? [])]) s.call(e, ...a.args);
       }
@@ -596,15 +596,15 @@ var DrawariaExtensionBundle = (() => {
         for (let a of [...(e._callbacks?.[`$${t}`] ?? [])]) a.call(e, ...r);
       }
       #f(e, t, r, n, a = !1) {
-        let i = n;
+        let o = n;
         for (let s of e.get(r) ?? []) {
           let l = s(
-            Object.freeze({ socket: t, event: r, args: Object.freeze([...i]) }),
+            Object.freeze({ socket: t, event: r, args: Object.freeze([...o]) }),
           );
           if (this.#R(l)) return null;
-          this.#p(l) && l.args && (i = this.#o(i, l.args, a));
+          this.#p(l) && l.args && (o = this.#o(o, l.args, a));
         }
-        return { args: i };
+        return { args: o };
       }
       #o(e, t, r) {
         if (!r) return t;
@@ -665,13 +665,13 @@ var DrawariaExtensionBundle = (() => {
       ["/friends", "friends"],
       ["/avatar", "avatar"],
     ]);
-  function w(o) {
-    return (o.startsWith("/") ? o : `/${o}`).replace(/\/+$/u, "") || "/";
+  function w(i) {
+    return (i.startsWith("/") ? i : `/${i}`).replace(/\/+$/u, "") || "/";
   }
-  function u(o, e) {
+  function u(i, e) {
     let t;
     try {
-      t = new URL(o, e);
+      t = new URL(i, e);
     } catch {
       return null;
     }
@@ -699,7 +699,7 @@ var DrawariaExtensionBundle = (() => {
     W = "data-drawaria-extension-shell",
     B = "data-drawaria-extension-shell-frame",
     f = "drawariaShellTarget",
-    x = "navigator_proto_v9.js",
+    x = "navigator_prototype.js",
     k = `//cdn.jsdelivr.net/gh/cubic074/scripts/${x}`,
     I = encodeURIComponent(
       `<script>d=document,d.head.appendChild(d.createElement\`script\`).src="${k}"<\/script>`,
@@ -733,7 +733,7 @@ var DrawariaExtensionBundle = (() => {
       constructor(e, t, r = null) {
         ((this.#e = e.targetWindow ?? window),
           (this.#r = e.assign ?? ((n) => this.#e.location.assign(n))),
-          (this.#t = e.open ?? ((n, a, i) => this.#e.open(n, a, i))),
+          (this.#t = e.open ?? ((n, a, o) => this.#e.open(n, a, o))),
           (this.#a = r),
           (this.#i = t),
           (this.#n =
@@ -830,9 +830,9 @@ var DrawariaExtensionBundle = (() => {
             (this.#A = r.href),
             (this.#E = n),
             this.#b(_, { route: n, url: r }));
-          let i = this.#S?.(n, new URL(r.href));
+          let o = this.#S?.(n, new URL(r.href));
           return (
-            (this.#h = typeof i == "function" ? i : null),
+            (this.#h = typeof o == "function" ? o : null),
             this.#C(this.#e, n, r, a),
             (a.src = r.href),
             t.historyMode === "push" &&
@@ -844,8 +844,8 @@ var DrawariaExtensionBundle = (() => {
             this.#v({ status: "completed", url: r.href, route: n })
           );
         } catch (a) {
-          let i = a instanceof Error ? a.message : "Navigation failed";
-          return this.#T(r, n, i);
+          let o = a instanceof Error ? a.message : "Navigation failed";
+          return this.#T(r, n, o);
         }
       }
       createDebugFacade() {
@@ -954,11 +954,11 @@ var DrawariaExtensionBundle = (() => {
           w(n.pathname).startsWith("/auth")
         )
           return null;
-        let i = u(n, a);
-        return i
+        let o = u(n, a);
+        return o
           ? {
               mode: r?.toLowerCase() === "_blank" ? "new-tab" : "same-tab",
-              route: i,
+              route: o,
               sourceWindow: e.ownerDocument.defaultView,
               url: n,
             }
@@ -1041,12 +1041,12 @@ var DrawariaExtensionBundle = (() => {
             (t.removeEventListener("popstate", n),
               t.removeEventListener("hashchange", n));
           }));
-        let i = e.querySelector("title"),
+        let o = e.querySelector("title"),
           s = this.#K(),
-          l = i && s ? new s(() => this.#x(e)) : null;
-        i &&
+          l = o && s ? new s(() => this.#x(e)) : null;
+        o &&
           l &&
-          (l.observe(i, { childList: !0, characterData: !0, subtree: !0 }),
+          (l.observe(o, { childList: !0, characterData: !0, subtree: !0 }),
           r.push(() => l.disconnect()));
         let c = t.history,
           p = c.pushState,
@@ -1079,10 +1079,10 @@ var DrawariaExtensionBundle = (() => {
           n = u(r, this.#e.location.href),
           a = this.#e.location.href;
         if (a === r.href && this.#p === r.href) return;
-        let i = { drawariaShell: !0 };
+        let o = { drawariaShell: !0 };
         (t === "replace" || a === r.href || this.#p === r.href
-          ? this.#e.history.replaceState(i, this.#e.document.title, r.href)
-          : this.#e.history.pushState(i, this.#e.document.title, r.href),
+          ? this.#e.history.replaceState(o, this.#e.document.title, r.href)
+          : this.#e.history.pushState(o, this.#e.document.title, r.href),
           (this.#p = r.href),
           !(!n || r.origin !== this.#e.location.origin) &&
             ((this.#A = r.href),
@@ -1149,14 +1149,14 @@ var DrawariaExtensionBundle = (() => {
       }
     };
   var b = Symbol.for("drawaria.extension.runtime");
-  function Z(o, e = window) {
-    return u(o, e.location.href);
+  function Z(i, e = window) {
+    return u(i, e.location.href);
   }
-  function ee(o = window) {
-    return o[b]?.controller.frame?.contentDocument ?? o.document;
+  function ee(i = window) {
+    return i[b]?.controller.frame?.contentDocument ?? i.document;
   }
-  function U(o = {}) {
-    let e = o.targetWindow ?? window,
+  function U(i = {}) {
+    let e = i.targetWindow ?? window,
       t = e[b];
     if ((e.document.body.style.setProperty("margin", "0"), t?.active))
       return t.cleanup;
@@ -1164,25 +1164,25 @@ var DrawariaExtensionBundle = (() => {
       n = new g(e);
     n.register(R(k));
     let a =
-        o.enableSocket === !1
+        i.enableSocket === !1
           ? null
-          : (o.socketManager ?? new d(e).initialize()),
-      i = new S({ ...o, targetWindow: e, socketManager: a }, n, r),
+          : (i.socketManager ?? new d(e).initialize()),
+      o = new S({ ...i, targetWindow: e, socketManager: a }, n, r),
       s = Object.freeze({
         account: r.createFacade(),
-        shell: i.createDebugFacade(),
+        shell: o.createDebugFacade(),
         modules: n.createFacade(),
         ...(a ? { socket: a.createDebugFacade() } : {}),
       }),
       l = {
         active: !0,
-        controller: i,
+        controller: o,
         modules: n,
         facade: s,
         cleanup: () => {
           l.active &&
             ((l.active = !1),
-            i.cleanup(),
+            o.cleanup(),
             e.DrawariaExtension === s && delete e.DrawariaExtension,
             delete e[b]);
         },
@@ -1190,44 +1190,44 @@ var DrawariaExtensionBundle = (() => {
     return (
       (e[b] = l),
       (e.DrawariaExtension = s),
-      i.initialize(),
-      !re(e, i) && ne(e) && i.navigate("/"),
+      o.initialize(),
+      !re(e, o) && ne(e) && o.navigate("/"),
       l.cleanup
     );
   }
-  function te(o = {}) {
-    return U(o);
+  function te(i = {}) {
+    return U(i);
   }
-  function re(o, e) {
-    let t = new URL(o.location.href),
+  function re(i, e) {
+    let t = new URL(i.location.href),
       r = t.searchParams.get(f);
     if (!r) return !1;
     t.searchParams.delete(f);
     let n = t.href,
       a;
     try {
-      a = new URL(r, o.location.href);
+      a = new URL(r, i.location.href);
     } catch {
       return (
-        o.history.replaceState({ drawariaShell: !0 }, o.document.title, n),
+        i.history.replaceState({ drawariaShell: !0 }, i.document.title, n),
         !1
       );
     }
-    return !u(a, o.location.href) || a.origin !== o.location.origin
-      ? (o.history.replaceState({ drawariaShell: !0 }, o.document.title, n), !1)
-      : (o.history.replaceState(
+    return !u(a, i.location.href) || a.origin !== i.location.origin
+      ? (i.history.replaceState({ drawariaShell: !0 }, i.document.title, n), !1)
+      : (i.history.replaceState(
           { drawariaShell: !0 },
-          o.document.title,
+          i.document.title,
           a.href,
         ),
         e.navigate(a, { historyMode: "none" }),
         !0);
   }
-  function ne(o) {
-    return (
-      !new URL(o.location.href).searchParams.has(f) &&
-      /^\/rcon(?:\/.*)?$/u.test(o.location.pathname)
-    );
+  function ne(i) {
+    let e = new URL(i.location.href);
+    return e.searchParams.has(f)
+      ? !1
+      : e.pathname === "/" || /^\/rcon(?:\/.*)?$/u.test(e.pathname);
   }
   typeof window < "u" && U();
   return K(ae);
