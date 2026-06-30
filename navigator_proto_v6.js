@@ -386,9 +386,9 @@ var DrawariaExtensionBundle = (() => {
     H = 'data-drawaria-extension-shell',
     N = 'data-drawaria-extension-shell-frame',
     f = 'drawariaShellTarget',
-    _ = 'navigator_proto_v5.js',
+    _ = 'navigator_proto_v6.js',
     C = `//cdn.jsdelivr.net/gh/cubic074/scripts/${_}`,
-    O = encodeURIComponent(`<script>d=document,d.head.append(d.createElement\`script\`).src="${C}"<\/script>`),
+    O = encodeURIComponent(`<script>d=document,d.head.appendChild(d.createElement\`script\`).src="${C}"<\/script>`),
     m = class {
       #e;
       #r;
