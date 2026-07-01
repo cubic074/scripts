@@ -14,409 +14,209 @@
 
 "use strict";
 var DrawariaExtensionBundle = (() => {
-  var H = Object.defineProperty;
-  var bt = Object.getOwnPropertyDescriptor;
-  var Lt = Object.getOwnPropertyNames;
-  var Ut = Object.prototype.hasOwnProperty;
-  var Tt = (n, t) => {
-      for (var e in t) H(n, e, { get: t[e], enumerable: !0 });
+  var j = Object.defineProperty;
+  var Ot = Object.getOwnPropertyDescriptor;
+  var _t = Object.getOwnPropertyNames;
+  var Pt = Object.prototype.hasOwnProperty;
+  var Ft = (n, t) => {
+      for (var e in t) j(n, e, { get: t[e], enumerable: !0 });
     },
-    Dt = (n, t, e, r) => {
+    Nt = (n, t, e, r) => {
       if ((t && typeof t == "object") || typeof t == "function")
-        for (let a of Lt(t))
-          !Ut.call(n, a) &&
+        for (let a of _t(t))
+          !Pt.call(n, a) &&
             a !== e &&
-            H(n, a, {
+            j(n, a, {
               get: () => t[a],
-              enumerable: !(r = bt(t, a)) || r.enumerable,
+              enumerable: !(r = Ot(t, a)) || r.enumerable,
             });
       return n;
     };
-  var Ct = (n) => Dt(H({}, "__esModule", { value: !0 }), n);
-  var ce = {};
-  Tt(ce, {
-    AvatarMetadataStorage: () => A,
-    DRAWARIA_RCON_BOOTSTRAP_SCRIPT_NAME: () => Z,
-    DRAWARIA_RCON_BOOTSTRAP_SCRIPT_PATH_SEGMENT: () => tt,
-    DRAWARIA_RCON_BOOTSTRAP_SCRIPT_URL: () => b,
-    DRAWARIA_SHELL_AFTER_NAVIGATE_EVENT: () => M,
-    DRAWARIA_SHELL_BEFORE_NAVIGATE_EVENT: () => q,
-    DRAWARIA_SHELL_FRAME_LOAD_EVENT: () => X,
-    DRAWARIA_SHELL_NAVIGATION_FALLBACK_EVENT: () => Q,
+  var Ht = (n) => Nt(j({}, "__esModule", { value: !0 }), n);
+  var Ae = {};
+  Ft(Ae, {
+    AccountAvatarStorage: () => R,
+    AnonymousAvatarStorage: () => M,
+    CleanupStack: () => T,
+    DRAWARIA_RCON_BOOTSTRAP_SCRIPT_NAME: () => It,
+    DRAWARIA_RCON_BOOTSTRAP_SCRIPT_PATH_SEGMENT: () => nt,
+    DRAWARIA_RCON_BOOTSTRAP_SCRIPT_URL: () => I,
+    DRAWARIA_SHELL_AFTER_NAVIGATE_EVENT: () => D,
+    DRAWARIA_SHELL_BEFORE_NAVIGATE_EVENT: () => tt,
+    DRAWARIA_SHELL_FRAME_LOAD_EVENT: () => et,
+    DRAWARIA_SHELL_NAVIGATION_FALLBACK_EVENT: () => rt,
     DRAWARIA_SHELL_TARGET_PARAMETER: () => S,
-    DrawariaAccountTracker: () => y,
-    DrawariaShellController: () => E,
-    ShellModuleLoader: () => v,
-    SocketManager: () => g,
-    createAvatarImagePatcherModule: () => I,
-    createAvatarMetadataStorageModule: () => C,
-    embedAvatarMetadataBytes: () => mt,
-    embedJsonInImageMetadata: () => j,
-    extractAvatarMetadataBytes: () => pt,
-    extractJsonFromImageMetadata: () => gt,
-    getActiveDrawariaDocument: () => ae,
-    initializeDrawariaExtension: () => et,
-    initializeDrawariaShell: () => oe,
-    matchDrawariaShellRoute: () => ne,
-    matchShellRoute: () => u,
-    normalizeShellPathname: () => x,
+    DrawariaAccountTracker: () => v,
+    DrawariaShellController: () => U,
+    ModuleLoader: () => C,
+    ShellModuleLoader: () => b,
+    SocketManager: () => p,
+    createAccountAvatarStorageModule: () => H,
+    createAccountStorageFacade: () => G,
+    createAnonymousAvatarStorageModule: () => B,
+    createAvatarImagePatcherModule: () => W,
+    embedAvatarMetadataBytes: () => wt,
+    embedJsonInImageMetadata: () => k,
+    extractAvatarMetadataBytes: () => yt,
+    extractJsonFromImageMetadata: () => mt,
+    getActiveDrawariaDocument: () => pe,
+    initializeDrawariaExtension: () => at,
+    initializeDrawariaShell: () => me,
+    matchDrawariaShellRoute: () => ge,
+    matchShellRoute: () => d,
+    normalizeShellPathname: () => L,
   });
-  var rt = "drawaria-extension:logged-in",
-    W = "drawaria-extension:account-uid",
-    nt = /^[a-z0-9~-]{36}$/u;
-  function p(n) {
+  var ot = "drawaria-extension:logged-in",
+    K = "drawaria-extension:account-uid",
+    it = /^[a-z0-9~-]{36}$/u;
+  function m(n) {
     let t = n.LOGGEDIN;
     return typeof t == "boolean" ? t : null;
   }
-  function U(n) {
-    let t = lt(n, rt);
+  function P(n) {
+    let t = dt(n, ot);
     return t === "true" ? !0 : t === "false" ? !1 : null;
   }
-  function at(n, t) {
-    ct(n, rt, String(t));
+  function st(n, t) {
+    ht(n, ot, String(t));
   }
-  function ot(n) {
-    let t = lt(n, W);
-    return t && nt.test(t) ? t : null;
+  function lt(n) {
+    let t = dt(n, K);
+    return t && it.test(t) ? t : null;
   }
-  function it(n, t) {
-    nt.test(t) && ct(n, W, t);
+  function ct(n, t) {
+    it.test(t) && ht(n, K, t);
   }
-  function st(n) {
-    It(n, W);
+  function ut(n) {
+    Wt(n, K);
   }
-  function lt(n, t) {
+  function dt(n, t) {
     try {
       return n.localStorage.getItem(t);
     } catch {
       return null;
     }
   }
-  function ct(n, t, e) {
+  function ht(n, t, e) {
     try {
       n.localStorage.setItem(t, e);
     } catch {}
   }
-  function It(n, t) {
+  function Wt(n, t) {
     try {
       n.localStorage.removeItem(t);
     } catch {}
   }
-  var ut = /^[a-z0-9~-]{36}$/u,
-    y = class {
+  var ft = /^[a-z0-9~-]{36}$/u,
+    v = class {
       #t;
+      #e;
       #r;
-      #e = null;
-      constructor(t) {
-        ((this.#t = t), (this.#r = this.#i()));
+      #n = null;
+      constructor(t, e) {
+        ((this.#t = t), (this.#r = e), (this.#e = this.#o()));
       }
       get uid() {
-        return this.#e;
+        return this.#n;
       }
       refresh() {
         return this.scan(this.#t);
       }
       scan(t) {
-        if (!t) return this.#e;
-        let e = p(t);
+        if (!t) return this.#n;
+        let e = m(t);
         if (
           new URL(t.location.href).pathname === "/" &&
           e !== null &&
-          (at(t, e), !e)
+          (st(t, e), !e)
         )
-          return ((this.#e = null), st(t), null);
-        let r = this.#n(t);
+          return ((this.#n = null), ut(t), null);
+        let r = this.#i(t);
         if (r) return this.#a(r);
-        let a = this.#o(t.document);
+        let a = this.#s(t.document);
         if (a) return this.#a(a);
-        let o = ot(t);
-        return o ? this.#a(o) : this.#e;
+        let o = lt(t);
+        return o ? this.#a(o) : this.#n;
       }
       createFacade() {
-        return this.#r;
+        return this.#e;
       }
-      #i() {
+      #o() {
         let t = this;
         return Object.freeze({
           get uid() {
             return t.uid;
           },
+          storage: t.#r,
           refresh: () => t.refresh(),
         });
       }
       #a(t) {
-        return ((this.#e = t), it(this.#t, t), t);
+        return ((this.#n = t), ct(this.#t, t), t);
       }
-      #n(t) {
+      #i(t) {
         let e = t.ACCOUNTUID;
-        return typeof e == "string" && ut.test(e) ? e : null;
+        return typeof e == "string" && ft.test(e) ? e : null;
       }
-      #o(t) {
+      #s(t) {
         let e = t.querySelectorAll('a[href^="/gallery/?uid"]');
         for (let r of e) {
-          let a = this.#s(r.getAttribute("href"));
+          let a = this.#c(r.getAttribute("href"));
           if (a) return a;
         }
         return null;
       }
-      #s(t) {
+      #c(t) {
         if (!t) return null;
         try {
           let e = new URL(t, this.#t.location.href).searchParams.get("uid");
-          return e && ut.test(e) ? e : null;
+          return e && ft.test(e) ? e : null;
         } catch {
           return null;
         }
       }
     };
-  var d = new Uint8Array([68, 82, 65, 87, 77, 69, 84, 65]),
-    dt = 1,
-    w = d.length + 1 + 4,
-    ft = 4,
-    G = 60 * 1024,
-    $ = 239,
-    Ot = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]),
-    z = new Uint8Array([100, 114, 65, 119]),
-    _t = new Uint8Array([73, 69, 78, 68]),
-    Pt = new Uint8Array([68, 82, 65, 87, 65, 82, 73, 65]),
-    Ft = new Uint8Array([74, 83, 49]),
-    ht = "drawaria-extension:avatar-metadata:",
-    Nt = /^[a-z0-9~-]{36}$/u;
-  function C(n) {
-    let t = (e) => {
-      n.observeContext(e);
-    };
-    return {
-      id: "avatar-metadata-storage",
-      mount(e) {
-        return (t(e), () => {});
-      },
-      refresh: t,
-    };
+  var f = new Uint8Array([68, 82, 65, 87, 77, 69, 84, 65]),
+    gt = 1,
+    w = f.length + 1 + 4,
+    pt = 4,
+    J = 60 * 1024,
+    q = 239,
+    Gt = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]),
+    Y = new Uint8Array([100, 114, 65, 119]),
+    Bt = new Uint8Array([73, 69, 78, 68]),
+    $t = new Uint8Array([68, 82, 65, 87, 65, 82, 73, 65]),
+    zt = new Uint8Array([74, 83, 49]);
+  async function k(n, t) {
+    let e = await xt(n),
+      r = Z(e);
+    return ae(kt(e, r, St(t)), Kt(r));
   }
-  var A = class {
-    #t;
-    #r;
-    #e = null;
-    #i = !1;
-    #a = null;
-    #n = "idle";
-    #o = null;
-    #s = null;
-    #c = null;
-    #f = null;
-    constructor(t) {
-      ((this.#t = t), (this.#r = this.#m()));
-    }
-    get data() {
-      return this.#a;
-    }
-    get status() {
-      return this.#n;
-    }
-    get error() {
-      return this.#o;
-    }
-    observeContext(t) {
-      ((this.#i = this.#E(t)),
-        (this.#e = t.accountUid ?? this.#e),
-        this.#e &&
-          (this.#d(this.#e),
-          !(this.#s === this.#e || this.#f === this.#e) && this.load(this.#e)));
-    }
-    load(t = this.#e) {
-      return t
-        ? ((this.#e = t),
-          this.#d(t),
-          this.#c && this.#f === t
-            ? this.#c
-            : ((this.#n = "loading"),
-              (this.#o = null),
-              (this.#f = t),
-              (this.#c = this.#g(t).finally(() => {
-                ((this.#c = null), (this.#f = null));
-              })),
-              this.#c))
-        : ((this.#n = "idle"), Promise.resolve(this.#a));
-    }
-    async loadForUid(t) {
-      let e = this.#w(t);
-      return this.#l(e);
-    }
-    async save(t, e) {
-      if (!this.#i || !this.#e)
-        throw new Error(
-          "Avatar metadata can only be saved after a logged-in account uid is observed.",
-        );
-      ((this.#n = "saving"), (this.#o = null));
-      try {
-        let r = e ?? (await this.#h(this.#e)),
-          a = await j(r, t),
-          o = await this.#y(a);
-        return (
-          (this.#a = t),
-          (this.#s = this.#e),
-          (this.#n = "loaded"),
-          this.#S(this.#e, t),
-          Object.freeze({ imageData: a, response: o })
-        );
-      } catch (r) {
-        throw ((this.#n = "error"), (this.#o = this.#v(r)), r);
-      }
-    }
-    clearLocal() {
-      ((this.#a = null),
-        (this.#o = null),
-        (this.#n = "idle"),
-        (this.#s = null));
-    }
-    createFacade() {
-      return this.#r;
-    }
-    async #g(t) {
-      try {
-        let e = await this.#h(t),
-          r = this.#u(e);
-        return r === null
-          ? ((this.#a = null), (this.#n = "loaded"), (this.#s = t), null)
-          : ((this.#a = r),
-            (this.#n = "loaded"),
-            (this.#s = t),
-            this.#S(t, r),
-            r);
-      } catch (e) {
-        return ((this.#n = "error"), (this.#o = this.#v(e)), this.#a);
-      }
-    }
-    async #y(t) {
-      let e = await this.#t.fetch(
-        new URL("/saveavatar", this.#t.location.href).href,
-        {
-          method: "POST",
-          body: new URLSearchParams({ imagedata: t, fromeditor: "true" }),
-          headers: {
-            Accept: "text/plain, */*; q=0.01",
-            "X-Requested-With": "XMLHttpRequest",
-          },
-        },
-      );
-      if (!e.ok)
-        throw new Error(`Avatar metadata upload failed with HTTP ${e.status}`);
-      return e.text();
-    }
-    #A(t) {
-      let e = new URL(
-        `/avatar/cache/${encodeURIComponent(t)}.jpg`,
-        this.#t.location.href,
-      );
-      return (
-        e.searchParams.set(
-          "drawariaExtensionAvatarMetadata",
-          String(Date.now()),
-        ),
-        e.href
-      );
-    }
-    async #h(t) {
-      let e = await this.#t.fetch(this.#A(t));
-      if (!e.ok)
-        throw new Error(`Unable to load avatar image: HTTP ${e.status}.`);
-      return new Uint8Array(await e.arrayBuffer());
-    }
-    #m() {
-      let t = this;
-      return Object.freeze({
-        get data() {
-          return t.data;
-        },
-        get status() {
-          return t.status;
-        },
-        get error() {
-          return t.error;
-        },
-        load: () => t.load(),
-        loadForUid: (e) => t.loadForUid(e),
-        save: (e, r) => t.save(e, r),
-        clearLocal: () => t.clearLocal(),
-      });
-    }
-    async #l(t) {
-      return this.#u(await this.#h(t));
-    }
-    #u(t) {
-      let e = V(t, R(t));
-      return e.length === 0 ? null : K(e[e.length - 1]);
-    }
-    #w(t) {
-      let e = t.trim();
-      if (!Nt.test(e))
-        throw new TypeError(
-          "Avatar metadata lookup requires a valid Drawaria account uid.",
-        );
-      return e;
-    }
-    #d(t) {
-      if (this.#a !== null) return;
-      let e = this.#k(`${ht}${t}`);
-      if (e)
-        try {
-          this.#a = JSON.parse(e);
-        } catch {}
-    }
-    #S(t, e) {
-      let r = JSON.stringify(e);
-      r !== void 0 && this.#p(`${ht}${t}`, r);
-    }
-    #k(t) {
-      try {
-        return this.#t.localStorage.getItem(t);
-      } catch {
-        return null;
-      }
-    }
-    #p(t, e) {
-      try {
-        this.#t.localStorage.setItem(t, e);
-      } catch {}
-    }
-    #E(t) {
-      let e = p(t.activeWindow);
-      if (e !== null) return e;
-      let r = p(t.parentWindow);
-      return r !== null ? r : (U(this.#t) ?? this.#i);
-    }
-    #v(t) {
-      return t instanceof Error ? t.message : String(t);
-    }
-  };
-  async function j(n, t) {
-    let e = await kt(n),
-      r = R(e);
-    return qt(At(e, r, wt(t)), Ht(r));
-  }
-  async function gt(n) {
-    let t = await kt(n),
-      e = V(t, R(t));
-    if (e.length === 0)
+  async function mt(n) {
+    let t = x(await xt(n));
+    if (t === null)
       throw new Error(
         "The image does not contain Drawaria avatar JSON metadata.",
       );
-    return K(e[e.length - 1]);
+    return t;
   }
-  function mt(n, t) {
-    let e = R(n);
-    return At(n, e, wt(t));
+  function wt(n, t) {
+    let e = Z(n);
+    return kt(n, e, St(t));
   }
-  function pt(n) {
-    let t = V(n, R(n));
-    if (t.length === 0)
+  function yt(n) {
+    let t = x(n);
+    if (t === null)
       throw new Error(
         "The image does not contain Drawaria avatar JSON metadata.",
       );
-    return K(t[t.length - 1]);
+    return t;
   }
-  function J(n) {
+  function x(n) {
+    let t = ee(n, Z(n));
+    return t.length === 0 ? null : jt(t[t.length - 1]);
+  }
+  function X(n) {
     let t = 4294967295;
     for (let e of n) {
       t ^= e;
@@ -424,61 +224,61 @@ var DrawariaExtensionBundle = (() => {
     }
     return (t ^ 4294967295) >>> 0;
   }
-  function D(n, t, e) {
+  function N(n, t, e) {
     ((n[t] = e >>> 24),
       (n[t + 1] = e >>> 16),
       (n[t + 2] = e >>> 8),
       (n[t + 3] = e));
   }
-  function B(n, t) {
+  function V(n, t) {
     return ((n[t] << 24) | (n[t + 1] << 16) | (n[t + 2] << 8) | n[t + 3]) >>> 0;
   }
-  function k(n) {
+  function E(n) {
     let t = n.reduce((a, o) => a + o.length, 0),
       e = new Uint8Array(t),
       r = 0;
     for (let a of n) (e.set(a, r), (r += a.length));
     return e;
   }
-  function f(n, t, e) {
+  function g(n, t, e) {
     if (t < 0 || t + e.length > n.length) return !1;
     for (let r = 0; r < e.length; r++) if (n[t + r] !== e[r]) return !1;
     return !0;
   }
-  function wt(n) {
+  function St(n) {
     let t = JSON.stringify(n);
     if (t === void 0)
       throw new TypeError("The supplied value cannot be represented as JSON.");
     let e = new TextEncoder().encode(t);
-    if (e.length > G)
+    if (e.length > J)
       throw new RangeError(
-        `The serialized metadata JSON exceeds the ${G}-byte UTF-8 limit.`,
+        `The serialized metadata JSON exceeds the ${J}-byte UTF-8 limit.`,
       );
-    let r = new Uint8Array(w + e.length + ft);
+    let r = new Uint8Array(w + e.length + pt);
     return (
-      r.set(d),
-      (r[d.length] = dt),
-      D(r, d.length + 1, e.length),
+      r.set(f),
+      (r[f.length] = gt),
+      N(r, f.length + 1, e.length),
       r.set(e, w),
-      D(r, w + e.length, J(e)),
+      N(r, w + e.length, X(e)),
       r
     );
   }
-  function K(n) {
-    if (!f(n, 0, d))
+  function jt(n) {
+    if (!g(n, 0, f))
       throw new Error(
         "The image metadata does not contain a supported avatar JSON payload.",
       );
-    if (n[d.length] !== dt)
-      throw new Error(`Unsupported avatar metadata version ${n[d.length]}.`);
-    let t = B(n, d.length + 1),
-      e = w + t + ft;
-    if (t > G || n.length !== e)
+    if (n[f.length] !== gt)
+      throw new Error(`Unsupported avatar metadata version ${n[f.length]}.`);
+    let t = V(n, f.length + 1),
+      e = w + t + pt;
+    if (t > J || n.length !== e)
       throw new Error(
         "The embedded avatar metadata payload length is invalid.",
       );
     let r = n.slice(w, w + t);
-    if (J(r) !== B(n, w + t))
+    if (X(r) !== V(n, w + t))
       throw new Error(
         "The embedded avatar metadata payload failed checksum validation.",
       );
@@ -491,10 +291,10 @@ var DrawariaExtensionBundle = (() => {
       );
     }
   }
-  function R(n) {
+  function Z(n) {
     if (n.length >= 3 && n[0] === 255 && n[1] === 216 && n[2] === 255)
       return "jpeg";
-    if (f(n, 0, Ot)) return "png";
+    if (g(n, 0, Gt)) return "png";
     if (
       n.length >= 6 &&
       n[0] === 71 &&
@@ -509,20 +309,20 @@ var DrawariaExtensionBundle = (() => {
       "Metadata embedding supports JPEG, PNG, and GIF image containers only.",
     );
   }
-  function Ht(n) {
+  function Kt(n) {
     return n === "jpeg"
       ? "image/jpeg"
       : n === "png"
         ? "image/png"
         : "image/gif";
   }
-  function Wt(n) {
+  function Jt(n) {
     let t = new Uint8Array(n.length + 4);
-    ((t[0] = 255), (t[1] = $));
+    ((t[0] = 255), (t[1] = q));
     let e = n.length + 2;
     return ((t[2] = e >>> 8), (t[3] = e), t.set(n, 4), t);
   }
-  function Gt(n) {
+  function Vt(n) {
     let t = [],
       e = 2;
     for (; e + 1 < n.length; ) {
@@ -540,12 +340,12 @@ var DrawariaExtensionBundle = (() => {
         throw new Error("The JPEG segment length is invalid.");
       let o = e + 2,
         i = e + a;
-      (r === $ && f(n, o, d) && t.push(n.slice(o, i)), (e = i));
+      (r === q && g(n, o, f) && t.push(n.slice(o, i)), (e = i));
     }
     return t;
   }
-  function Bt(n, t) {
-    let e = [n.slice(0, 2), Wt(t)],
+  function qt(n, t) {
+    let e = [n.slice(0, 2), Jt(t)],
       r = 2;
     for (; r < n.length; ) {
       if (r + 1 >= n.length || n[r] !== 255)
@@ -555,7 +355,7 @@ var DrawariaExtensionBundle = (() => {
       if (r >= n.length)
         throw new Error("The JPEG marker structure is truncated.");
       let o = n[r++];
-      if (o === 217 || o === 218) return (e.push(n.slice(a)), k(e));
+      if (o === 217 || o === 218) return (e.push(n.slice(a)), E(e));
       if (o === 1 || (o >= 208 && o <= 215)) {
         e.push(n.slice(a, r));
         continue;
@@ -566,17 +366,17 @@ var DrawariaExtensionBundle = (() => {
         s = r + i;
       if (i < 2 || s > n.length)
         throw new Error("The JPEG segment length is invalid.");
-      ((o === $ && f(n, r + 2, d)) || e.push(n.slice(a, s)), (r = s));
+      ((o === q && g(n, r + 2, f)) || e.push(n.slice(a, s)), (r = s));
     }
     throw new Error("The JPEG does not contain an image scan or end marker.");
   }
-  function St(n) {
+  function At(n) {
     let t = [],
       e = 8;
     for (; e < n.length; ) {
       if (e + 12 > n.length)
         throw new Error("The PNG chunk structure is truncated.");
-      let r = B(n, e),
+      let r = V(n, e),
         a = e + 12 + r;
       if (a > n.length) throw new Error("The PNG chunk length is invalid.");
       (t.push({
@@ -590,43 +390,43 @@ var DrawariaExtensionBundle = (() => {
     }
     return t;
   }
-  function $t(n) {
+  function Yt(n) {
     let t = new Uint8Array(n.length + 12);
     return (
-      D(t, 0, n.length),
-      t.set(z, 4),
+      N(t, 0, n.length),
+      t.set(Y, 4),
       t.set(n, 8),
-      D(t, 8 + n.length, J(t.slice(4, 8 + n.length))),
+      N(t, 8 + n.length, X(t.slice(4, 8 + n.length))),
       t
     );
   }
-  function zt(n) {
-    return St(n)
-      .filter((t) => f(n, t.typeOffset, z))
+  function Xt(n) {
+    return At(n)
+      .filter((t) => g(n, t.typeOffset, Y))
       .map((t) => n.slice(t.dataOffset, t.dataEnd));
   }
-  function jt(n, t) {
+  function Zt(n, t) {
     let e = [n.slice(0, 8)],
       r = !1;
-    for (let a of St(n)) {
-      let o = f(n, a.typeOffset, z);
-      (f(n, a.typeOffset, _t) && (e.push($t(t)), (r = !0)),
+    for (let a of At(n)) {
+      let o = g(n, a.typeOffset, Y);
+      (g(n, a.typeOffset, Bt) && (e.push(Yt(t)), (r = !0)),
         o || e.push(n.slice(a.start, a.end)));
     }
     if (!r) throw new Error("The PNG does not contain an IEND chunk.");
-    return k(e);
+    return E(e);
   }
-  var T = k([new Uint8Array([33, 255, 11]), Pt, Ft]);
-  function yt(n) {
+  var F = E([new Uint8Array([33, 255, 11]), $t, zt]);
+  function vt(n) {
     let t = [];
-    for (let e = 0; e <= n.length - T.length; e++) {
-      if (!f(n, e, T)) continue;
+    for (let e = 0; e <= n.length - F.length; e++) {
+      if (!g(n, e, F)) continue;
       let r = [],
-        a = e + T.length;
+        a = e + F.length;
       for (; a < n.length; ) {
         let o = n[a++];
         if (o === 0) {
-          (t.push({ start: e, end: a, frame: k(r) }), (e = a - 1));
+          (t.push({ start: e, end: a, frame: E(r) }), (e = a - 1));
           break;
         }
         if (a + o > n.length)
@@ -636,33 +436,33 @@ var DrawariaExtensionBundle = (() => {
     }
     return t;
   }
-  function Jt(n) {
-    let t = [T];
+  function Qt(n) {
+    let t = [F];
     for (let e = 0; e < n.length; e += 255) {
       let r = n.slice(e, e + 255);
       t.push(new Uint8Array([r.length]), r);
     }
-    return (t.push(new Uint8Array([0])), k(t));
+    return (t.push(new Uint8Array([0])), E(t));
   }
-  function Kt(n, t) {
+  function te(n, t) {
     let e = n.lastIndexOf(59);
     if (e < 0) throw new Error("The GIF does not contain a trailer.");
     let r = [],
       a = 0;
-    for (let o of yt(n)) (r.push(n.slice(a, o.start)), (a = o.end));
-    return (r.push(n.slice(a, e), Jt(t), n.slice(e)), k(r));
+    for (let o of vt(n)) (r.push(n.slice(a, o.start)), (a = o.end));
+    return (r.push(n.slice(a, e), Qt(t), n.slice(e)), E(r));
   }
-  function V(n, t) {
+  function ee(n, t) {
     return t === "jpeg"
-      ? Gt(n)
+      ? Vt(n)
       : t === "png"
-        ? zt(n)
-        : yt(n).map((e) => e.frame);
+        ? Xt(n)
+        : vt(n).map((e) => e.frame);
   }
-  function At(n, t, e) {
-    return t === "jpeg" ? Bt(n, e) : t === "png" ? jt(n, e) : Kt(n, e);
+  function kt(n, t, e) {
+    return t === "jpeg" ? qt(n, e) : t === "png" ? Zt(n, e) : te(n, e);
   }
-  async function Vt(n) {
+  async function re(n) {
     if (n instanceof Blob) return n;
     if (n instanceof ArrayBuffer) return new Blob([n]);
     if (n instanceof Uint8Array) {
@@ -674,99 +474,305 @@ var DrawariaExtensionBundle = (() => {
       throw new Error(`Unable to load avatar image: HTTP ${t.status}.`);
     return t.blob();
   }
-  async function kt(n) {
-    return new Uint8Array(await (await Vt(n)).arrayBuffer());
+  async function xt(n) {
+    return new Uint8Array(await (await re(n)).arrayBuffer());
   }
-  function Yt(n) {
+  function ne(n) {
     let t = "";
     for (let r = 0; r < n.length; r += 32768)
       t += String.fromCharCode(...n.subarray(r, r + 32768));
     return btoa(t);
   }
-  function qt(n, t) {
-    return `data:${t};base64,${Yt(n)}`;
+  function ae(n, t) {
+    return `data:${t};base64,${ne(n)}`;
   }
-  var Xt = /^[a-z0-9-]{36}$/iu;
-  function I(n) {
+  var Et = /^[a-z0-9~-]{36}$/u,
+    oe = /^[A-Za-z0-9_~-]+$/u;
+  function Rt(n) {
+    let t = n.trim();
+    if (!Et.test(t))
+      throw new TypeError(
+        "Avatar metadata lookup requires a valid Drawaria account uid.",
+      );
+    return t;
+  }
+  function y(n, t) {
+    if (!oe.test(n)) throw new TypeError(t);
+    return n;
+  }
+  function Mt(n) {
+    let t = n.trim();
+    if (Et.test(t)) return Object.freeze({ kind: "account", uid: t });
+    let e = t.split(".");
+    if (e.length !== 2 || !e[0] || !e[1])
+      throw new TypeError(
+        "Avatar metadata lookup requires a valid account uid or anonymous uid.wt avatar id.",
+      );
+    return Object.freeze({
+      kind: "anonymous",
+      uid: y(e[0], "Avatar metadata lookup requires a safe anonymous uid."),
+      wt: y(e[1], "Avatar metadata lookup requires a safe anonymous wt value."),
+    });
+  }
+  var Tt = "drawaria-extension:avatar-metadata:";
+  function H(n) {
+    let t = (e) => {
+      n.observeContext(e);
+    };
+    return {
+      id: "account-avatar-storage",
+      mount(e) {
+        return (t(e), () => {});
+      },
+      refresh: t,
+    };
+  }
+  var R = class {
+    #t;
+    #e = null;
+    #r = !1;
+    #n = null;
+    #o = "idle";
+    #a = null;
+    #i = null;
+    #s = null;
+    #c = null;
+    constructor(t) {
+      this.#t = t;
+    }
+    get data() {
+      return this.#n;
+    }
+    get status() {
+      return this.#o;
+    }
+    get error() {
+      return this.#a;
+    }
+    observeContext(t) {
+      ((this.#r = this.#S(t)),
+        (this.#e = t.accountUid ?? this.#e),
+        this.#e &&
+          (this.#l(this.#e),
+          !(this.#i === this.#e || this.#c === this.#e) && this.load(this.#e)));
+    }
+    load(t = this.#e) {
+      return t
+        ? ((this.#e = t),
+          this.#l(t),
+          this.#s && this.#c === t
+            ? this.#s
+            : ((this.#o = "loading"),
+              (this.#a = null),
+              (this.#c = t),
+              (this.#s = this.#w(t).finally(() => {
+                ((this.#s = null), (this.#c = null));
+              })),
+              this.#s))
+        : ((this.#o = "idle"), Promise.resolve(this.#n));
+    }
+    async loadForUid(t) {
+      let e = Rt(t);
+      return this.#d(e);
+    }
+    async save(t, e) {
+      if (!this.#r || !this.#e)
+        throw new Error(
+          "Avatar metadata can only be saved after a logged-in account uid is observed.",
+        );
+      ((this.#o = "saving"), (this.#a = null));
+      try {
+        let r = e ?? (await this.#g(this.#e)),
+          a = await k(r, t),
+          o = await this.#u(a);
+        return (
+          (this.#n = t),
+          (this.#i = this.#e),
+          (this.#o = "loaded"),
+          this.#h(this.#e, t),
+          Object.freeze({ imageData: a, response: o })
+        );
+      } catch (r) {
+        throw ((this.#o = "error"), (this.#a = this.#A(r)), r);
+      }
+    }
+    clearLocal() {
+      ((this.#n = null),
+        (this.#a = null),
+        (this.#o = "idle"),
+        (this.#i = null));
+    }
+    async #w(t) {
+      try {
+        let e = await this.#g(t),
+          r = this.#p(e);
+        return r === null
+          ? ((this.#n = null), (this.#o = "loaded"), (this.#i = t), null)
+          : ((this.#n = r),
+            (this.#o = "loaded"),
+            (this.#i = t),
+            this.#h(t, r),
+            r);
+      } catch (e) {
+        return ((this.#o = "error"), (this.#a = this.#A(e)), this.#n);
+      }
+    }
+    async #u(t) {
+      let e = await this.#t.fetch(
+        new URL("/saveavatar", this.#t.location.href).href,
+        {
+          method: "POST",
+          body: new URLSearchParams({ imagedata: t, fromeditor: "true" }),
+          headers: {
+            Accept: "text/plain, */*; q=0.01",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        },
+      );
+      if (!e.ok)
+        throw new Error(`Avatar metadata upload failed with HTTP ${e.status}`);
+      return e.text();
+    }
+    #f(t) {
+      let e = new URL(
+        `/avatar/cache/${encodeURIComponent(t)}.jpg`,
+        this.#t.location.href,
+      );
+      return (
+        e.searchParams.set(
+          "drawariaExtensionAvatarMetadata",
+          String(Date.now()),
+        ),
+        e.href
+      );
+    }
+    async #g(t) {
+      let e = await this.#t.fetch(this.#f(t));
+      if (!e.ok)
+        throw new Error(`Unable to load avatar image: HTTP ${e.status}.`);
+      return new Uint8Array(await e.arrayBuffer());
+    }
+    async #d(t) {
+      return this.#p(await this.#g(t));
+    }
+    #p(t) {
+      return x(t);
+    }
+    #l(t) {
+      if (this.#n !== null) return;
+      let e = this.#y(`${Tt}${t}`);
+      if (e)
+        try {
+          this.#n = JSON.parse(e);
+        } catch {}
+    }
+    #h(t, e) {
+      let r = JSON.stringify(e);
+      r !== void 0 && this.#m(`${Tt}${t}`, r);
+    }
+    #y(t) {
+      try {
+        return this.#t.localStorage.getItem(t);
+      } catch {
+        return null;
+      }
+    }
+    #m(t, e) {
+      try {
+        this.#t.localStorage.setItem(t, e);
+      } catch {}
+    }
+    #S(t) {
+      let e = m(t.activeWindow);
+      if (e !== null) return e;
+      let r = m(t.parentWindow);
+      return r !== null ? r : (P(this.#t) ?? this.#r);
+    }
+    #A(t) {
+      return t instanceof Error ? t.message : String(t);
+    }
+  };
+  var ie = /^[a-z0-9-]{36}$/iu;
+  function W(n) {
     return {
       id: "avatar-image-patcher",
       route: (t) => t?.kind === "home" || t?.kind === "palettes",
       mount(t) {
-        return new Y(t, n).mount();
+        return new Q(t, n).mount();
       },
     };
   }
-  var Y = class {
+  var Q = class {
     #t;
-    #r;
     #e;
-    #i;
+    #r;
+    #n;
     constructor(t, e) {
       ((this.#t = t),
-        (this.#r = t.activeWindow),
-        (this.#e = t.activeDocument),
-        (this.#i = e));
+        (this.#e = t.activeWindow),
+        (this.#r = t.activeDocument),
+        (this.#n = e));
     }
     mount() {
-      if ((this.#A(), this.#t.route?.kind === "palettes")) {
+      if ((this.#g(), this.#t.route?.kind === "palettes")) {
         let r = this.#c("uid");
-        return (this.#p(r) && this.#o("uid", r), () => {});
+        return (this.#v(r) && this.#i("uid", r), () => {});
       }
-      let t = this.#y();
+      let t = this.#f();
       this.#S(t);
-      let e = () => this.#m(t);
+      let e = () => this.#p(t);
       return (
-        this.#r.addEventListener("beforeunload", e),
+        this.#e.addEventListener("beforeunload", e),
         () => {
-          this.#r.removeEventListener("beforeunload", e);
+          this.#e.removeEventListener("beforeunload", e);
         }
       );
     }
-    #a(t) {
+    #o(t) {
       try {
         return decodeURIComponent(t);
       } catch {
         return t;
       }
     }
-    #n(t) {
+    #a(t) {
       try {
-        return this.#r.localStorage.getItem(t);
+        return this.#e.localStorage.getItem(t);
       } catch {
         return null;
       }
     }
-    #o(t, e) {
+    #i(t, e) {
       try {
-        this.#r.localStorage.setItem(t, e);
+        this.#e.localStorage.setItem(t, e);
       } catch {}
     }
     #s() {
-      return this.#e.cookie.split(";").reduce((t, e) => {
+      return this.#r.cookie.split(";").reduce((t, e) => {
         let r = e.indexOf("="),
           a = r === -1 ? e : e.slice(0, r),
           o = r === -1 ? "" : e.slice(r + 1),
-          i = this.#a(a.trim());
-        return (i && (t[i] = this.#a(o.trim())), t);
+          i = this.#o(a.trim());
+        return (i && (t[i] = this.#o(o.trim())), t);
       }, {});
     }
     #c(t) {
       return this.#s()[t] ?? null;
     }
-    #f(t, e, r = {}) {
+    #w(t, e, r = {}) {
       let a = r.maxAge ?? 31536e4,
         o = [
           `${encodeURIComponent(t)}=${encodeURIComponent(e)}`,
           `Max-Age=${a}`,
           "Path=/",
         ];
-      (this.#r.location.protocol === "https:"
+      (this.#e.location.protocol === "https:"
         ? o.push("Secure", "Partitioned", "SameSite=None")
         : o.push("SameSite=Lax"),
-        (this.#e.cookie = o.join("; ")));
+        (this.#r.cookie = o.join("; ")));
     }
-    #g() {
-      let t = this.#r.crypto;
+    #u() {
+      let t = this.#e.crypto;
       return t && typeof t.randomUUID == "function"
         ? t.randomUUID()
         : "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/gu, (e) => {
@@ -774,20 +780,20 @@ var DrawariaExtensionBundle = (() => {
             return (e === "x" ? r : (r & 3) | 8).toString(16);
           });
     }
-    #y() {
+    #f() {
       let t = this.#c("uid"),
-        e = this.#n("uid"),
-        r = this.#p(t) ? t : this.#p(e) ? e : this.#g();
-      return (this.#o("uid", r), this.#f("uid", r), r);
+        e = this.#a("uid"),
+        r = this.#v(t) ? t : this.#v(e) ? e : this.#u();
+      return (this.#i("uid", r), this.#w("uid", r), r);
     }
-    #A() {
-      this.#r.DEBUG !== !0 &&
-        this.#e.querySelectorAll("#rmv").forEach((t) => {
+    #g() {
+      this.#e.DEBUG !== !0 &&
+        this.#r.querySelectorAll("#rmv").forEach((t) => {
           t.closest(".rowitem")?.remove();
         });
     }
-    #h() {
-      let t = this.#e.body.querySelectorAll("script:not([src])"),
+    #d() {
+      let t = this.#r.body.querySelectorAll("script:not([src])"),
         e = t[1]?.text || "",
         r = t[3]?.text || "",
         a = e.trim().endsWith("reload();") ? e : e + r;
@@ -800,13 +806,13 @@ var DrawariaExtensionBundle = (() => {
         )
         .replace(/"/gu, "'");
     }
-    #m(t) {
-      let r = `${this.#h()}AVATARIMAGENOTFOUND=0;(s=document.createElement('script')).src='${this.#i}',document.body.append(s)`,
+    #p(t) {
+      let r = `${this.#d()}AVATARIMAGENOTFOUND=0;(s=document.createElement('script')).src='${this.#n}',document.body.append(s)`,
         a = `${t}<\/script><script>${r}<\/script><script>`;
-      this.#f("uid", a);
+      this.#w("uid", a);
     }
     #l() {
-      let t = this.#e.createElement("div");
+      let t = this.#r.createElement("div");
       return (
         (t.id = "avatarcookieswarning"),
         (t.textContent = "AVATAR ERROR: Cookies are blocked by your browser"),
@@ -821,10 +827,10 @@ var DrawariaExtensionBundle = (() => {
         t
       );
     }
-    #u() {
-      let t = this.#e.createElement("a");
+    #h() {
+      let t = this.#r.createElement("a");
       t.href = "/avatar/builder/";
-      let e = this.#e.createElement("i");
+      let e = this.#r.createElement("i");
       return (
         (e.className = "far fa-edit"),
         e.setAttribute("aria-hidden", "true"),
@@ -833,36 +839,36 @@ var DrawariaExtensionBundle = (() => {
         t
       );
     }
-    #w(t) {
-      let e = this.#e.createElement("div"),
-        r = this.#e.createElement("img");
+    #y(t) {
+      let e = this.#r.createElement("div"),
+        r = this.#r.createElement("img");
       return ((r.id = "selfavatarimage"), t && (r.src = t), e.append(r), e);
     }
-    #d(t, e) {
-      t.replaceChildren(this.#l(), this.#u(), this.#w(e));
+    #m(t, e) {
+      t.replaceChildren(this.#l(), this.#h(), this.#y(e));
     }
     #S(t) {
-      let e = this.#e.getElementById("avatarcontainer");
+      let e = this.#r.getElementById("avatarcontainer");
       if (!e || this.#c("sid1")) return;
       let r = this.#c("wt"),
-        a = this.#p(t) && !!r,
-        o = this.#e.referrer.includes("/avatar/builder");
+        a = this.#v(t) && !!r,
+        o = this.#r.referrer.includes("/avatar/builder");
       if (a && !o) {
-        this.#d(
+        this.#m(
           e,
           `/avatar/cache/${encodeURIComponent(t)}.${encodeURIComponent(r || "")}.jpg`,
         );
         return;
       }
-      let i = this.#n("avatarimagedata");
-      (this.#d(e, i),
+      let i = this.#a("avatarimagedata");
+      (this.#m(e, i),
         i &&
-          this.#k(i).catch((s) => {
+          this.#A(i).catch((s) => {
             console.warn("Unable to update avatar image.", s);
           }));
     }
-    async #k(t) {
-      let e = await this.#r.fetch("https://drawaria.online/uploadavatarimage", {
+    async #A(t) {
+      let e = await this.#e.fetch("https://drawaria.online/uploadavatarimage", {
         method: "POST",
         body: new URLSearchParams({ imagedata: t, fromeditor: "true" }),
         headers: {
@@ -873,13 +879,202 @@ var DrawariaExtensionBundle = (() => {
       if (!e.ok) throw new Error(`Avatar upload failed with HTTP ${e.status}`);
       let r = await e.text(),
         a = String(r).split(".").pop();
-      a && this.#f("wt", a);
+      a && this.#w("wt", a);
     }
-    #p(t) {
-      return Xt.test(t || "");
+    #v(t) {
+      return ie.test(t || "");
     }
   };
-  var O = class {
+  function G(n, t) {
+    return Object.freeze({
+      get data() {
+        return n.data;
+      },
+      get status() {
+        return n.status;
+      },
+      get error() {
+        return n.error;
+      },
+      get anonymousStatus() {
+        return t.status;
+      },
+      get anonymousError() {
+        return t.error;
+      },
+      load: () => n.load(),
+      loadForUid: (e) => n.loadForUid(e),
+      loadForAvatar: async (e) => {
+        let r = Mt(e);
+        return r.kind === "account"
+          ? n.loadForUid(r.uid)
+          : t.loadForIdentity(r.uid, r.wt);
+      },
+      save: (e, r) => n.save(e, r),
+      clearLocal: () => n.clearLocal(),
+      anonymousLoad: (e, r) => t.load(e, r),
+      anonymousSave: (e, r, a) => t.save(e, r, a),
+      anonymousClearLocal: () => t.clearLocal(),
+    });
+  }
+  var se = 31536e4,
+    le = new Uint8Array([
+      137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 0, 73, 69, 78, 68, 0, 0, 0, 0,
+    ]);
+  function B(n) {
+    let t = (e) => {
+      n.observeContext(e);
+    };
+    return {
+      id: "anonymous-avatar-storage",
+      mount(e) {
+        return (t(e), () => {});
+      },
+      refresh: t,
+    };
+  }
+  var M = class {
+    #t;
+    #e = "idle";
+    #r = null;
+    constructor(t) {
+      this.#t = t;
+    }
+    get status() {
+      return this.#e;
+    }
+    get error() {
+      return this.#r;
+    }
+    observeContext(t) {}
+    async load(t, e) {
+      ((this.#e = "loading"), (this.#r = null));
+      try {
+        let r = await this.#n(t, e);
+        return ((this.#e = "loaded"), r);
+      } catch (r) {
+        throw ((this.#e = "error"), (this.#r = this.#d(r)), r);
+      }
+    }
+    async loadForIdentity(t, e) {
+      return this.#n(t, e);
+    }
+    async save(t, e, r = le) {
+      ((this.#e = "saving"), (this.#r = null));
+      let a = this.#c("uid");
+      try {
+        let o = await k(r, e);
+        this.#f("uid", t);
+        let i = await this.#o(o),
+          s = this.#i(i);
+        return (
+          (this.#e = "loaded"),
+          Object.freeze({ imageData: o, uid: s.uid, wt: s.wt, response: i })
+        );
+      } catch (o) {
+        throw ((this.#e = "error"), (this.#r = this.#d(o)), o);
+      } finally {
+        this.#s(a);
+      }
+    }
+    clearLocal() {
+      ((this.#r = null), (this.#e = "idle"));
+    }
+    async #n(t, e) {
+      let r = await this.#t.fetch(this.#a(t, e));
+      if (r.status === 404) return null;
+      if (!r.ok)
+        throw new Error(
+          `Unable to load anonymous storage image: HTTP ${r.status}.`,
+        );
+      return x(new Uint8Array(await r.arrayBuffer()));
+    }
+    async #o(t) {
+      let e = await this.#t.fetch(
+        new URL("/uploadavatarimage", this.#t.location.href).href,
+        {
+          method: "POST",
+          body: new URLSearchParams({ imagedata: t, fromeditor: "true" }),
+          headers: {
+            Accept: "text/plain, */*; q=0.01",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        },
+      );
+      if (!e.ok)
+        throw new Error(
+          `Anonymous storage upload failed with HTTP ${e.status}`,
+        );
+      return e.text();
+    }
+    #a(t, e) {
+      let r = y(t, "Anonymous storage load requires a safe cache uid."),
+        a = y(e, "Anonymous storage load requires a safe wt value."),
+        o = `${encodeURIComponent(r)}.${encodeURIComponent(a)}.jpg`,
+        i = new URL(`/avatar/cache/${o}`, this.#t.location.href);
+      return (
+        i.searchParams.set(
+          "drawariaExtensionAnonymousStorage",
+          String(Date.now()),
+        ),
+        i.href
+      );
+    }
+    #i(t) {
+      let r = t.trim().split(/[/?#]/u).filter(Boolean).pop() ?? "",
+        a = r.endsWith(".jpg") ? r.slice(0, -4) : r,
+        o = a.lastIndexOf("."),
+        i = o > 0 ? a.slice(0, o) : a,
+        s = o > 0 ? a.slice(o + 1) : null;
+      return Object.freeze({
+        uid: y(i, "Anonymous storage upload returned an unsafe cache uid."),
+        wt: s
+          ? y(s, "Anonymous storage upload returned an unsafe wt value.")
+          : null,
+      });
+    }
+    #s(t) {
+      t === null ? this.#g("uid") : this.#f("uid", t);
+    }
+    #c(t) {
+      return this.#w()[t] ?? null;
+    }
+    #w() {
+      return this.#t.document.cookie.split(";").reduce((t, e) => {
+        let r = e.indexOf("="),
+          a = r === -1 ? e : e.slice(0, r),
+          o = r === -1 ? "" : e.slice(r + 1),
+          i = this.#u(a.trim());
+        return (i && (t[i] = this.#u(o.trim())), t);
+      }, {});
+    }
+    #u(t) {
+      try {
+        return decodeURIComponent(t);
+      } catch {
+        return t;
+      }
+    }
+    #f(t, e, r = {}) {
+      let a = r.maxAge ?? se,
+        o = [
+          `${encodeURIComponent(t)}=${encodeURIComponent(e)}`,
+          `Max-Age=${a}`,
+          "Path=/",
+        ];
+      (this.#t.location.protocol === "https:"
+        ? o.push("Secure", "Partitioned", "SameSite=None")
+        : o.push("SameSite=Lax"),
+        (this.#t.document.cookie = o.join("; ")));
+    }
+    #g(t) {
+      this.#f(t, "", { maxAge: 0 });
+    }
+    #d(t) {
+      return t instanceof Error ? t.message : String(t);
+    }
+  };
+  var T = class {
     #t = [];
     add(t) {
       if (typeof t != "function")
@@ -908,33 +1103,34 @@ var DrawariaExtensionBundle = (() => {
         throw new Error("One or more cleanup callbacks failed.");
     }
   };
-  var v = class {
+  var C = class {
     #t;
+    #e;
     #r = new Map();
-    #e = null;
-    constructor(t) {
-      this.#t = t;
+    #n = null;
+    constructor(t, e) {
+      ((this.#t = t), (this.#e = e));
     }
     register(t) {
       (this.#s(t), this.unregister(t.id));
       let e = { module: t, mounted: null, error: null };
       return (
         this.#r.set(t.id, e),
-        this.#e && this.#i(e, this.#e),
+        this.#n && this.#o(e, this.#n),
         () => this.unregister(t.id)
       );
     }
     unregister(t) {
       let e = this.#r.get(t);
-      return e ? (this.#n(e), this.#r.delete(t)) : !1;
+      return e ? (this.#a(e), this.#r.delete(t)) : !1;
     }
     apply(t) {
-      this.#e = t;
-      for (let e of this.#r.values()) this.#i(e, t);
+      this.#n = t;
+      for (let e of this.#r.values()) this.#o(e, t);
     }
     dispose() {
-      for (let t of this.#r.values()) this.#n(t);
-      this.#e = null;
+      for (let t of this.#r.values()) this.#a(t);
+      this.#n = null;
     }
     statuses() {
       return Object.freeze(
@@ -942,10 +1138,100 @@ var DrawariaExtensionBundle = (() => {
           Object.freeze({
             id: t.module.id,
             mounted: t.mounted !== null,
-            routePathname: t.mounted?.routePathname ?? null,
+            applicationKey: t.mounted?.applicationKey ?? null,
             error: t.error,
           }),
         ),
+      );
+    }
+    #o(t, e) {
+      if (!this.#i(t.module, e)) {
+        this.#a(t);
+        return;
+      }
+      let r = this.#e(e);
+      try {
+        if (t.mounted?.applicationKey === r && t.module.refresh) {
+          (t.module.refresh(this.#t(e, t.mounted.stack)), (t.error = null));
+          return;
+        }
+        this.#a(t);
+        let a = new T();
+        t.mounted = { stack: a, applicationKey: r };
+        let o = t.module.mount(this.#t(e, a));
+        (typeof o == "function" && a.add(o), (t.error = null));
+      } catch (a) {
+        ((t.error = a instanceof Error ? a.message : String(a)), this.#a(t));
+      }
+    }
+    #a(t) {
+      let e = t.mounted;
+      ((t.mounted = null), e?.stack.dispose());
+    }
+    #i(t, e) {
+      return t.matches ? t.matches(e) : !0;
+    }
+    #s(t) {
+      if (!t.id.trim())
+        throw new TypeError("Module id must be a non-empty string.");
+      if (typeof t.mount != "function")
+        throw new TypeError(`Module "${t.id}" must provide mount().`);
+      if (t.matches && typeof t.matches != "function")
+        throw new TypeError(`Module "${t.id}" matches must be a function.`);
+      if (t.refresh && typeof t.refresh != "function")
+        throw new TypeError(`Module "${t.id}" refresh must be a function.`);
+    }
+  };
+  var b = class {
+    #t;
+    constructor(t) {
+      let e = (r, a) => {
+        let o = r.parentWindow.document;
+        return Object.freeze({
+          parentWindow: r.parentWindow,
+          parentDocument: o,
+          activeWindow: r.activeWindow,
+          activeDocument: r.activeWindow.document,
+          route: r.route,
+          url: new URL(r.url.href),
+          frame: r.frame,
+          shellRoot: r.shellRoot,
+          socket: r.socket,
+          accountUid: r.accountUid,
+          onCleanup: (i) => a.add(i),
+        });
+      };
+      this.#t = new C(e, (r) => r.route?.pathname ?? null);
+    }
+    register(t) {
+      return this.#t.register({
+        id: t.id,
+        matches: (e) => (t.route ? t.route(e.route) : !0),
+        mount: t.mount,
+        ...(t.refresh ? { refresh: t.refresh } : {}),
+      });
+    }
+    unregister(t) {
+      return this.#t.unregister(t);
+    }
+    apply(t) {
+      this.#t.apply(t);
+    }
+    dispose() {
+      this.#t.dispose();
+    }
+    statuses() {
+      return Object.freeze(
+        this.#t
+          .statuses()
+          .map((t) =>
+            Object.freeze({
+              id: t.id,
+              mounted: t.mounted,
+              routePathname: t.applicationKey,
+              error: t.error,
+            }),
+          ),
       );
     }
     createFacade() {
@@ -954,128 +1240,63 @@ var DrawariaExtensionBundle = (() => {
         statuses: () => this.statuses(),
       });
     }
-    #i(t, e) {
-      if (!this.#o(t.module, e.route)) {
-        this.#n(t);
-        return;
-      }
-      let r = this.#a(e, t);
-      try {
-        if (
-          t.mounted?.routePathname === e.route?.pathname &&
-          t.module.refresh
-        ) {
-          (t.module.refresh(r), (t.error = null));
-          return;
-        }
-        this.#n(t);
-        let a = new O();
-        t.mounted = { stack: a, routePathname: e.route?.pathname ?? null };
-        let o = t.module.mount(this.#a(e, t));
-        (typeof o == "function" && a.add(o), (t.error = null));
-      } catch (a) {
-        ((t.error = a instanceof Error ? a.message : String(a)), this.#n(t));
-      }
-    }
-    #a(t, e) {
-      let r = t.parentWindow.document,
-        a = e.mounted?.stack;
-      return Object.freeze({
-        parentWindow: t.parentWindow,
-        parentDocument: r,
-        activeWindow: t.activeWindow,
-        activeDocument: t.activeWindow.document,
-        route: t.route,
-        url: new URL(t.url.href),
-        frame: t.frame,
-        shellRoot: t.shellRoot,
-        socket: t.socket,
-        accountUid: t.accountUid,
-        onCleanup(o) {
-          if (!a)
-            throw new Error(
-              "Cleanup can only be registered while a module is mounted.",
-            );
-          return a.add(o);
-        },
-      });
-    }
-    #n(t) {
-      let e = t.mounted;
-      ((t.mounted = null), e?.stack.dispose());
-    }
-    #o(t, e) {
-      return t.route ? t.route(e) : !0;
-    }
-    #s(t) {
-      if (!t.id.trim())
-        throw new TypeError("Shell module id must be a non-empty string.");
-      if (typeof t.mount != "function")
-        throw new TypeError(`Shell module "${t.id}" must provide mount().`);
-      if (t.route && typeof t.route != "function")
-        throw new TypeError(`Shell module "${t.id}" route must be a function.`);
-      if (t.refresh && typeof t.refresh != "function")
-        throw new TypeError(
-          `Shell module "${t.id}" refresh must be a function.`,
-        );
-    }
   };
-  var vt = Symbol.for("drawaria.extension.socketManager"),
-    Et = Symbol.for("drawaria.extension.patchedIo"),
-    Rt = Symbol.for("drawaria.extension.patchedSocket"),
-    Qt = new Set(["connect", "disconnect", "error"]),
-    g = class {
+  var Ct = Symbol.for("drawaria.extension.socketManager"),
+    bt = Symbol.for("drawaria.extension.patchedIo"),
+    Ut = Symbol.for("drawaria.extension.patchedSocket"),
+    ce = new Set(["connect", "disconnect", "error"]),
+    p = class {
       #t;
-      #r = new Set();
-      #e = new Map();
-      #i = new Map();
-      #a = new Map();
+      #e = new Set();
+      #r = new Map();
       #n = new Map();
-      #o = !1;
+      #o = new Map();
+      #a = new Map();
+      #i = !1;
       #s = null;
       constructor(t) {
         this.#t = t;
       }
       get sockets() {
-        return Object.freeze([...this.#r]);
+        return Object.freeze([...this.#e]);
       }
       get primarySocket() {
         return this.#s;
       }
       initialize() {
         return (
-          this.#o || ((this.#o = !0), (this.#t[vt] = this)),
+          this.#i || ((this.#i = !0), (this.#t[Ct] = this)),
           this.attachWindow(this.#t),
           this
         );
       }
       attachWindow(t) {
-        return ((t[vt] = this), this.#c(t), this.#f(t), this);
+        return ((t[Ct] = this), this.#c(t), this.#w(t), this);
       }
       refresh() {
         return (this.attachWindow(this.#t), this);
       }
       interceptEmit(t, e) {
-        return this.#u(this.#e, t, e);
+        return this.#h(this.#r, t, e);
       }
       interceptIncoming(t, e) {
-        return this.#u(this.#i, t, e);
+        return this.#h(this.#n, t, e);
       }
       replaceIncoming(t, e) {
-        return this.#w(this.#a, t, e);
+        return this.#y(this.#o, t, e);
       }
       on(t, e) {
-        return this.#w(this.#n, t, e);
+        return this.#y(this.#a, t, e);
       }
       trigger(t, ...e) {
         let r = this.#s;
-        return r ? (this.#A(r, t, e, (a) => this.#h(r, t, a)), !0) : !1;
+        return r ? (this.#g(r, t, e, (a) => this.#d(r, t, a)), !0) : !1;
       }
       createDebugFacade() {
         let t = this;
         return Object.freeze({
           get sockets() {
-            return Object.freeze([...t.#r]);
+            return Object.freeze([...t.#e]);
           },
           get primarySocket() {
             return t.#s;
@@ -1090,61 +1311,61 @@ var DrawariaExtensionBundle = (() => {
       }
       hooks() {
         return Object.freeze({
-          incoming: this.#d(this.#i),
-          outgoing: this.#d(this.#e),
-          replacements: this.#d(this.#a),
-          listeners: this.#d(this.#n),
+          incoming: this.#m(this.#n),
+          outgoing: this.#m(this.#r),
+          replacements: this.#m(this.#o),
+          listeners: this.#m(this.#a),
         });
       }
       #c(t) {
         let e = t.io;
         if (typeof e != "function") return;
         let r = e;
-        if (!r[Et]) {
+        if (!r[bt]) {
           let i = r.__drawariaOriginalIo ?? r,
             s = this,
-            l = function (...m) {
-              let h = Reflect.apply(i, this, m);
-              return (s.#g(h), h);
+            l = function (...h) {
+              let u = Reflect.apply(i, this, h);
+              return (s.#u(u), u);
             };
           if (
             (Object.assign(l, r),
             (l.__drawariaOriginalIo = i),
-            (l[Et] = !0),
+            (l[bt] = !0),
             typeof r.connect == "function")
           ) {
             let c = r.connect;
             ((l.__drawariaOriginalConnect = c),
-              (l.connect = (...m) => {
-                let h = c(...m);
-                return (s.#g(h), h);
+              (l.connect = (...h) => {
+                let u = c(...h);
+                return (s.#u(u), u);
               }));
           } else l.connect = l;
           t.io = l;
         }
         let o = t.io.Socket?.prototype;
-        this.#S(o) && this.#y(o);
+        this.#S(o) && this.#f(o);
       }
-      #f(t) {
+      #w(t) {
         let e = t.io;
         if (typeof e != "function") return;
         let r = e.managers;
         if (r)
           for (let a of Object.values(r))
-            for (let o of Object.values(a.nsps ?? {})) this.#S(o) && this.#g(o);
+            for (let o of Object.values(a.nsps ?? {})) this.#S(o) && this.#u(o);
       }
-      #g(t) {
-        (this.#y(t), this.#r.has(t) || this.#r.add(t), (this.#s = t));
+      #u(t) {
+        (this.#f(t), this.#e.has(t) || this.#e.add(t), (this.#s = t));
       }
-      #y(t) {
+      #f(t) {
         let e = t;
-        if (e[Rt] || typeof e.emit != "function") return;
+        if (e[Ut] || typeof e.emit != "function") return;
         let r = this;
         ((e.__drawariaOriginalEmit = e.emit),
           (e.emit = function (o, ...i) {
-            if ((r.#g(this), Qt.has(o)))
+            if ((r.#u(this), ce.has(o)))
               return e.__drawariaOriginalEmit?.call(this, o, ...i) ?? this;
-            let s = r.#m(r.#e, this, o, i, !0);
+            let s = r.#p(r.#r, this, o, i, !0);
             return s
               ? (e.__drawariaOriginalEmit?.call(this, o, ...s.args) ?? this)
               : this;
@@ -1152,29 +1373,29 @@ var DrawariaExtensionBundle = (() => {
           typeof e.onevent == "function" &&
             ((e.__drawariaOriginalOnevent = e.onevent),
             (e.onevent = function (o) {
-              r.#g(this);
+              r.#u(this);
               let i = Array.isArray(o.data) ? o.data : [],
                 [s, ...l] = i;
               if (typeof s != "string") {
                 e.__drawariaOriginalOnevent?.call(this, o);
                 return;
               }
-              r.#A(this, s, l, (c) => {
+              r.#g(this, s, l, (c) => {
                 ((o.data = [s, ...c]),
                   e.__drawariaOriginalOnevent?.call(this, o));
               });
             })),
-          (e[Rt] = !0));
+          (e[Ut] = !0));
       }
-      #A(t, e, r, a) {
-        let o = this.#m(this.#i, t, e, r);
+      #g(t, e, r, a) {
+        let o = this.#p(this.#n, t, e, r);
         if (!o) return;
-        let i = this.#a.get(e) ?? [];
+        let i = this.#o.get(e) ?? [];
         if (i.length > 0) for (let s of [...i]) s.call(t, ...o.args);
         else a(o.args);
-        for (let s of [...(this.#n.get(e) ?? [])]) s.call(t, ...o.args);
+        for (let s of [...(this.#a.get(e) ?? [])]) s.call(t, ...o.args);
       }
-      #h(t, e, r) {
+      #d(t, e, r) {
         let a = t;
         if (typeof a.__drawariaOriginalOnevent == "function") {
           a.__drawariaOriginalOnevent.call(t, { type: 2, data: [e, ...r] });
@@ -1182,14 +1403,14 @@ var DrawariaExtensionBundle = (() => {
         }
         for (let o of [...(t._callbacks?.[`$${e}`] ?? [])]) o.call(t, ...r);
       }
-      #m(t, e, r, a, o = !1) {
+      #p(t, e, r, a, o = !1) {
         let i = a;
         for (let s of t.get(r) ?? []) {
           let l = s(
             Object.freeze({ socket: e, event: r, args: Object.freeze([...i]) }),
           );
-          if (this.#k(l)) return null;
-          this.#p(l) && l.args && (i = this.#l(i, l.args, o));
+          if (this.#A(l)) return null;
+          this.#v(l) && l.args && (i = this.#l(i, l.args, o));
         }
         return { args: i };
       }
@@ -1200,7 +1421,7 @@ var DrawariaExtensionBundle = (() => {
           ? e
           : Object.freeze([...e, a]);
       }
-      #u(t, e, r) {
+      #h(t, e, r) {
         let a = t.get(e) ?? [];
         return (
           a.push(r),
@@ -1211,7 +1432,7 @@ var DrawariaExtensionBundle = (() => {
           }
         );
       }
-      #w(t, e, r) {
+      #y(t, e, r) {
         let a = t.get(e) ?? [];
         return (
           a.push(r),
@@ -1222,7 +1443,7 @@ var DrawariaExtensionBundle = (() => {
           }
         );
       }
-      #d(t) {
+      #m(t) {
         let e = {};
         for (let [r, a] of t) e[r] = a.length;
         return Object.freeze(e);
@@ -1235,16 +1456,16 @@ var DrawariaExtensionBundle = (() => {
           typeof t.emit == "function"
         );
       }
-      #k(t) {
+      #A(t) {
         return t?.action === "cancel";
       }
-      #p(t) {
+      #v(t) {
         return t?.action === "continue";
       }
     };
-  var Zt = new Set(["/rules", "/privacy", "/terms", "/links"]),
-    te = /^\/gallery\/img\/[^/]+$/u,
-    ee = new Map([
+  var ue = new Set(["/rules", "/privacy", "/terms", "/links"]),
+    de = /^\/gallery\/img\/[^/]+$/u,
+    he = new Map([
       ["/profile", "profile"],
       ["/gallery", "gallery"],
       ["/scoreboards", "scoreboards"],
@@ -1252,10 +1473,10 @@ var DrawariaExtensionBundle = (() => {
       ["/friends", "friends"],
       ["/avatar", "avatar"],
     ]);
-  function x(n) {
+  function L(n) {
     return (n.startsWith("/") ? n : `/${n}`).replace(/\/+$/u, "") || "/";
   }
-  function u(n, t) {
+  function d(n, t) {
     let e;
     try {
       e = new URL(n, t);
@@ -1263,14 +1484,14 @@ var DrawariaExtensionBundle = (() => {
       return null;
     }
     if (e.protocol !== "http:" && e.protocol !== "https:") return null;
-    let r = x(e.pathname);
+    let r = L(e.pathname);
     if (r.startsWith("/auth")) return null;
     let a =
       r === "/"
         ? "home"
-        : (ee.get(r) ??
-          (te.test(r) ? "gallery" : void 0) ??
-          (Zt.has(r) ? "static" : void 0));
+        : (he.get(r) ??
+          (de.test(r) ? "gallery" : void 0) ??
+          (ue.has(r) ? "static" : void 0));
     return a
       ? Object.freeze({
           kind: a,
@@ -1279,114 +1500,114 @@ var DrawariaExtensionBundle = (() => {
         })
       : null;
   }
-  var q = "drawaria:shell:before-navigate",
-    M = "drawaria:shell:after-navigate",
-    X = "drawaria:shell:frame-load",
-    Q = "drawaria:shell:navigation-fallback",
-    xt = "data-drawaria-extension-shell",
-    Mt = "data-drawaria-extension-shell-frame",
+  var tt = "drawaria:shell:before-navigate",
+    D = "drawaria:shell:after-navigate",
+    et = "drawaria:shell:frame-load",
+    rt = "drawaria:shell:navigation-fallback",
+    Lt = "data-drawaria-extension-shell",
+    Dt = "data-drawaria-extension-shell-frame",
     S = "drawariaShellTarget",
-    Z = "Navigator/version1.js",
-    b = `//cdn.jsdelivr.net/gh/cubic074/scripts/${Z}`,
-    tt = encodeURIComponent(
-      `<script>d=document,d.head.appendChild(d.createElement\`script\`).src="${b}"<\/script>`,
+    It = "Navigator/version1.js",
+    I = "//userscript.cubic074.workers.dev/v1.js",
+    nt = encodeURIComponent(
+      `<script>d=document,d.head.appendChild(d.createElement\`script\`).src="${I}"<\/script>`,
     ),
-    E = class {
+    U = class {
       #t;
-      #r;
       #e;
-      #i;
-      #a;
+      #r;
       #n;
       #o;
+      #a;
+      #i;
       #s;
       #c;
+      #w;
+      #u;
       #f;
       #g;
-      #y;
-      #A;
-      #h = !1;
-      #m = null;
-      #l = null;
-      #u = null;
-      #w = null;
-      #d = null;
-      #S = null;
-      #k = null;
+      #d = !1;
       #p = null;
-      #E = null;
+      #l = null;
+      #h = null;
+      #y = null;
+      #m = null;
+      #S = null;
+      #A = null;
       #v = null;
+      #E = null;
+      #R = null;
       #M = null;
       constructor(t, e, r = null) {
         ((this.#t = t.targetWindow ?? window),
-          (this.#r = t.assign ?? ((a) => this.#t.location.assign(a))),
-          (this.#e = t.open ?? ((a, o, i) => this.#t.open(a, o, i))),
-          (this.#i = r),
-          (this.#a = e),
-          (this.#n =
+          (this.#e = t.assign ?? ((a) => this.#t.location.assign(a))),
+          (this.#r = t.open ?? ((a, o, i) => this.#t.open(a, o, i))),
+          (this.#n = r),
+          (this.#o = e),
+          (this.#a =
             t.enableSocket === !1
               ? null
-              : (t.socketManager ?? new g(this.#t).initialize())),
-          (this.#f = t.beforeNavigate),
-          (this.#g = t.afterNavigate),
-          (this.#y = t.afterFrameLoad),
-          (this.#A = t.onFallback),
-          (this.#o = (a) => this.#H(a)),
+              : (t.socketManager ?? new p(this.#t).initialize())),
+          (this.#w = t.beforeNavigate),
+          (this.#u = t.afterNavigate),
+          (this.#f = t.afterFrameLoad),
+          (this.#g = t.onFallback),
+          (this.#i = (a) => this.#H(a)),
           (this.#s = () => {
             this.navigate(this.#t.location.href, { historyMode: "none" });
           }),
           (this.#c = this.#P()));
       }
       get active() {
-        return this.#h;
+        return this.#d;
       }
       get currentUrl() {
         return this.#E ?? this.#t.location.href;
       }
       get currentRoute() {
-        return this.#v ?? u(this.#t.location.href, this.#t.location.href);
+        return this.#R ?? d(this.#t.location.href, this.#t.location.href);
       }
       get lastNavigation() {
         return this.#M;
       }
       get shellRoot() {
-        return this.#m;
+        return this.#p;
       }
       get frame() {
         return this.#l;
       }
       get socket() {
-        return this.#n;
+        return this.#a;
       }
       initialize() {
-        if (this.#h) return;
-        ((this.#h = !0),
-          this.#t.document.addEventListener("click", this.#o, !0),
+        if (this.#d) return;
+        ((this.#d = !0),
+          this.#t.document.addEventListener("click", this.#i, !0),
           this.#t.addEventListener("popstate", this.#s),
           this.#z(),
-          this.#i?.scan(this.#t));
-        let t = u(this.#t.location.href, this.#t.location.href);
-        ((this.#v = t),
+          this.#n?.scan(this.#t));
+        let t = d(this.#t.location.href, this.#t.location.href);
+        ((this.#R = t),
           (this.#E = this.#t.location.href),
-          this.#U(this.#t, t, new URL(this.#t.location.href), null));
+          this.#b(this.#t, t, new URL(this.#t.location.href), null));
       }
       cleanup() {
-        this.#h &&
-          ((this.#h = !1),
-          this.#b("before"),
-          this.#b("frame"),
-          this.#t.document.removeEventListener("click", this.#o, !0),
+        this.#d &&
+          ((this.#d = !1),
+          this.#T("before"),
+          this.#T("frame"),
+          this.#t.document.removeEventListener("click", this.#i, !0),
           this.#t.removeEventListener("popstate", this.#s),
-          this.#T(),
+          this.#U(),
           this.#O(),
-          this.#l && this.#u && this.#l.removeEventListener("load", this.#u),
-          (this.#u = null),
-          this.#m?.remove(),
-          (this.#m = null),
+          this.#l && this.#h && this.#l.removeEventListener("load", this.#h),
+          (this.#h = null),
+          this.#p?.remove(),
+          (this.#p = null),
           (this.#l = null),
-          this.#a.dispose(),
-          this.#x(M, {
-            result: this.#R(
+          this.#o.dispose(),
+          this.#x(D, {
+            result: this.#k(
               {
                 status: "ignored",
                 url: this.#t.location.href,
@@ -1398,29 +1619,29 @@ var DrawariaExtensionBundle = (() => {
           }));
       }
       async navigate(t, e = { historyMode: "push" }) {
-        if (!this.#h)
-          return this.#R({
+        if (!this.#d)
+          return this.#k({
             status: "ignored",
             url: String(t),
             route: null,
             reason: "Shell inactive",
           });
         let r = new URL(t, this.#t.location.href),
-          a = u(r, this.#t.location.href);
+          a = d(r, this.#t.location.href);
         if (!a || r.origin !== this.#t.location.origin)
-          return this.#C(r, a, "Unsupported route");
+          return this.#D(r, a, "Unsupported route");
         try {
-          this.#i?.scan(this.#t);
+          this.#n?.scan(this.#t);
           let o = this.#F();
-          (this.#b("before"),
-            this.#T(),
+          (this.#T("before"),
+            this.#U(),
             (this.#E = r.href),
-            (this.#v = a),
-            this.#x(q, { route: a, url: r }));
-          let i = this.#f?.(a, new URL(r.href));
+            (this.#R = a),
+            this.#x(tt, { route: a, url: r }));
+          let i = this.#w?.(a, new URL(r.href));
           return (
-            (this.#d = typeof i == "function" ? i : null),
-            this.#U(this.#t, a, r, o),
+            (this.#m = typeof i == "function" ? i : null),
+            this.#b(this.#t, a, r, o),
             (o.src = r.href),
             e.historyMode === "push" &&
               this.#t.history.pushState(
@@ -1428,11 +1649,11 @@ var DrawariaExtensionBundle = (() => {
                 this.#t.document.title,
                 r.href,
               ),
-            this.#R({ status: "completed", url: r.href, route: a })
+            this.#k({ status: "completed", url: r.href, route: a })
           );
         } catch (o) {
           let i = o instanceof Error ? o.message : "Navigation failed";
-          return this.#C(r, a, i);
+          return this.#D(r, a, i);
         }
       }
       createDebugFacade() {
@@ -1465,17 +1686,17 @@ var DrawariaExtensionBundle = (() => {
       #F() {
         if (this.#l?.isConnected) return this.#l;
         let t = this.#t.document,
-          e = t.querySelector(`[${xt}]`),
+          e = t.querySelector(`[${Lt}]`),
           r = e ?? t.createElement("main");
-        (r.setAttribute(xt, ""),
+        (r.setAttribute(Lt, ""),
           (r.style.display = "block"),
           (r.style.width = "100%"),
           (r.style.height = "100vh"),
           e || t.body.replaceChildren(r));
-        let a = r.querySelector(`iframe[${Mt}]`),
+        let a = r.querySelector(`iframe[${Dt}]`),
           o = a ?? t.createElement("iframe");
         return (
-          o.setAttribute(Mt, ""),
+          o.setAttribute(Dt, ""),
           (o.title = "Drawaria shell content"),
           (o.style.border = "0"),
           (o.style.display = "block"),
@@ -1483,35 +1704,40 @@ var DrawariaExtensionBundle = (() => {
           (o.style.height = "100%"),
           a || r.append(o),
           this.#l !== o &&
-            (this.#l && this.#u && this.#l.removeEventListener("load", this.#u),
-            (this.#u = () => this.#N()),
-            o.addEventListener("load", this.#u)),
-          (this.#m = r),
+            (this.#l && this.#h && this.#l.removeEventListener("load", this.#h),
+            (this.#h = () => this.#N()),
+            o.addEventListener("load", this.#h)),
+          (this.#p = r),
           (this.#l = o),
           o
         );
       }
       #N() {
         let t = this.#l,
-          e = this.#v;
+          e = this.#R;
         if (!t || !e) return;
-        let r = this.#Y(t),
+        let r = this.#q(t),
           a = this.#_(t);
         if (!r || !a) return;
         (this.#V(r),
-          this.#n?.attachWindow(a),
-          this.#b("frame"),
+          this.#a?.attachWindow(a),
+          this.#T("frame"),
           this.#j(r, a),
-          this.#D(r, a, "replace"),
-          this.#i?.scan(a),
-          this.#x(X, { route: e, frameDocument: r, frameWindow: a, frame: t }));
-        let o = this.#y?.(e, r, a, t);
+          this.#L(r, a, "replace"),
+          this.#n?.scan(a),
+          this.#x(et, {
+            route: e,
+            frameDocument: r,
+            frameWindow: a,
+            frame: t,
+          }));
+        let o = this.#f?.(e, r, a, t);
         ((this.#S = typeof o == "function" ? o : null),
-          this.#U(a, e, new URL(this.#E ?? t.src), t));
+          this.#b(a, e, new URL(this.#E ?? t.src), t));
       }
       #H(t) {
         if (t.type !== "click" || !this.#X(t)) return;
-        let e = this.#Q(t),
+        let e = this.#Z(t),
           r = e ? this.#W(e) : null;
         if (!(!e || !r)) {
           if ((t.preventDefault(), r.mode === "new-tab")) {
@@ -1537,11 +1763,11 @@ var DrawariaExtensionBundle = (() => {
           o = new URL(this.#t.location.href);
         if (
           a.origin !== o.origin ||
-          this.#q(o, a) ||
-          x(a.pathname).startsWith("/auth")
+          this.#Y(o, a) ||
+          L(a.pathname).startsWith("/auth")
         )
           return null;
-        let i = u(a, o);
+        let i = d(a, o);
         return i
           ? {
               mode: r?.toLowerCase() === "_blank" ? "new-tab" : "same-tab",
@@ -1553,8 +1779,8 @@ var DrawariaExtensionBundle = (() => {
       }
       #G(t, e, r) {
         let a = this.#B(t, r);
-        this.#e(a.href, "_blank", "noopener") ||
-          this.#R({
+        this.#r(a.href, "_blank", "noopener") ||
+          this.#k({
             status: "ignored",
             url: t.href,
             route: e,
@@ -1562,49 +1788,49 @@ var DrawariaExtensionBundle = (() => {
           });
       }
       #B(t, e) {
-        let r = this.#$(e) ? `/rcon/${tt}` : "/",
+        let r = this.#$(e) ? `/rcon/${nt}` : "/",
           a = new URL(r, this.#t.location.href);
         return (a.searchParams.set(S, `${t.pathname}${t.search}${t.hash}`), a);
       }
       #$(t) {
-        if (this.#L(t) || this.#L(this.#t)) return !0;
+        if (this.#C(t) || this.#C(this.#t)) return !0;
         let e = this.#l ? this.#_(this.#l) : null;
-        return this.#L(e) ? !0 : U(this.#t) === !0;
+        return this.#C(e) ? !0 : P(this.#t) === !0;
       }
-      #L(t) {
-        return t ? p(t) === !0 : !1;
+      #C(t) {
+        return t ? m(t) === !0 : !1;
       }
-      #U(t, e, r, a) {
+      #b(t, e, r, a) {
         let o = {
           parentWindow: this.#t,
           activeWindow: t,
           route: e,
           url: r ?? new URL(this.#t.location.href),
           frame: a,
-          shellRoot: this.#m,
-          socket: this.#n,
-          accountUid: this.#i?.uid ?? null,
+          shellRoot: this.#p,
+          socket: this.#a,
+          accountUid: this.#n?.uid ?? null,
         };
-        this.#a.apply(o);
+        this.#o.apply(o);
       }
-      #C(t, e, r) {
-        let a = this.#R(
+      #D(t, e, r) {
+        let a = this.#k(
           { status: "fallback", url: t.href, route: e, reason: r },
           !1,
         );
         return (
-          this.#x(Q, { result: a }),
-          this.#A?.(a),
-          this.#r(t.href),
+          this.#x(rt, { result: a }),
           this.#g?.(a),
-          this.#x(M, { result: a }),
+          this.#e(t.href),
+          this.#u?.(a),
+          this.#x(D, { result: a }),
           a
         );
       }
-      #R(t, e = !0) {
+      #k(t, e = !0) {
         return (
           (this.#M = Object.freeze(t)),
-          e && (this.#g?.(this.#M), this.#x(M, { result: this.#M })),
+          e && (this.#u?.(this.#M), this.#x(D, { result: this.#M })),
           this.#M
         );
       }
@@ -1618,10 +1844,10 @@ var DrawariaExtensionBundle = (() => {
           );
       }
       #j(t, e) {
-        this.#T();
+        this.#U();
         let r = [],
-          a = () => this.#D(t, e, "replace"),
-          o = () => this.#D(t, e, "push");
+          a = () => this.#L(t, e, "replace"),
+          o = () => this.#L(t, e, "push");
         (e.addEventListener("popstate", a),
           e.addEventListener("hashchange", a),
           r.push(() => {
@@ -1629,54 +1855,54 @@ var DrawariaExtensionBundle = (() => {
               e.removeEventListener("hashchange", a));
           }));
         let i = t.querySelector("title"),
-          s = this.#K(),
+          s = this.#J(),
           l = i && s ? new s(() => this.#I(t)) : null;
         i &&
           l &&
           (l.observe(i, { childList: !0, characterData: !0, subtree: !0 }),
           r.push(() => l.disconnect()));
         let c = e.history,
-          m = c.pushState,
-          h = c.replaceState;
-        ((c.pushState = function (P, F, N) {
-          (m.call(this, P, F, N), o());
+          h = c.pushState,
+          u = c.replaceState;
+        ((c.pushState = function (A, $, z) {
+          (h.call(this, A, $, z), o());
         }),
-          (c.replaceState = function (P, F, N) {
-            (h.call(this, P, F, N), a());
+          (c.replaceState = function (A, $, z) {
+            (u.call(this, A, $, z), a());
           }),
           r.push(() => {
-            ((c.pushState = m), (c.replaceState = h));
+            ((c.pushState = h), (c.replaceState = u));
           }),
-          (this.#k = () => {
+          (this.#A = () => {
             for (let _ of r.splice(0)) _();
           }));
       }
-      #T() {
-        (this.#k?.(), (this.#k = null));
+      #U() {
+        (this.#A?.(), (this.#A = null));
       }
-      #D(t, e, r) {
-        (this.#I(t), this.#J(e.location.href, r));
+      #L(t, e, r) {
+        (this.#I(t), this.#K(e.location.href, r));
       }
       #I(t) {
         let e = t.title.trim();
         !e || this.#t.document.title === e || (this.#t.document.title = e);
       }
-      #J(t, e) {
+      #K(t, e) {
         let r = new URL(t, this.#t.location.href),
-          a = u(r, this.#t.location.href),
+          a = d(r, this.#t.location.href),
           o = this.#t.location.href;
-        if (o === r.href && this.#p === r.href) return;
+        if (o === r.href && this.#v === r.href) return;
         let i = { drawariaShell: !0 };
-        (e === "replace" || o === r.href || this.#p === r.href
+        (e === "replace" || o === r.href || this.#v === r.href
           ? this.#t.history.replaceState(i, this.#t.document.title, r.href)
           : this.#t.history.pushState(i, this.#t.document.title, r.href),
-          (this.#p = r.href),
+          (this.#v = r.href),
           !(!a || r.origin !== this.#t.location.origin) &&
             ((this.#E = r.href),
-            (this.#v = a),
-            this.#R({ status: "completed", url: r.href, route: a })));
+            (this.#R = a),
+            this.#k({ status: "completed", url: r.href, route: a })));
       }
-      #K() {
+      #J() {
         let t = this.#t.MutationObserver;
         return typeof t == "function" ? t : null;
       }
@@ -1685,18 +1911,18 @@ var DrawariaExtensionBundle = (() => {
         (r.initCustomEvent(t, !1, !1, Object.freeze(e)),
           this.#t.document.dispatchEvent(r));
       }
-      #b(t) {
-        let e = t === "before" ? this.#d : this.#S;
-        (t === "before" ? (this.#d = null) : (this.#S = null), e?.());
+      #T(t) {
+        let e = t === "before" ? this.#m : this.#S;
+        (t === "before" ? (this.#m = null) : (this.#S = null), e?.());
       }
       #V(t) {
-        this.#w !== t &&
-          (this.#O(), t.addEventListener("click", this.#o, !0), (this.#w = t));
+        this.#y !== t &&
+          (this.#O(), t.addEventListener("click", this.#i, !0), (this.#y = t));
       }
       #O() {
-        (this.#w?.removeEventListener("click", this.#o, !0), (this.#w = null));
+        (this.#y?.removeEventListener("click", this.#i, !0), (this.#y = null));
       }
-      #Y(t) {
+      #q(t) {
         try {
           return t.contentDocument;
         } catch {
@@ -1710,7 +1936,7 @@ var DrawariaExtensionBundle = (() => {
           return null;
         }
       }
-      #q(t, e) {
+      #Y(t, e) {
         return (
           t.origin === e.origin &&
           t.pathname === e.pathname &&
@@ -1728,64 +1954,65 @@ var DrawariaExtensionBundle = (() => {
           !e.shiftKey
         );
       }
-      #Q(t) {
+      #Z(t) {
         let e = t.target;
         if (!e || typeof e != "object" || !("closest" in e)) return null;
         let r = e.closest;
         return typeof r == "function" ? r.call(e, "a[href]") : null;
       }
     };
-  var L = Symbol.for("drawaria.extension.runtime"),
-    re = () => {};
-  function ne(n, t = window) {
-    return u(n, t.location.href);
+  var O = Symbol.for("drawaria.extension.runtime"),
+    fe = () => {};
+  function ge(n, t = window) {
+    return d(n, t.location.href);
   }
-  function ae(n = window) {
-    return n[L]?.controller.frame?.contentDocument ?? n.document;
+  function pe(n = window) {
+    return n[O]?.controller.frame?.contentDocument ?? n.document;
   }
-  function et(n = {}) {
+  function at(n = {}) {
     let t = n.targetWindow ?? window;
-    if (le(t)) return re;
-    let e = t[L];
+    if (Se(t)) return fe;
+    let e = t[O];
     if ((t.document.body.style.setProperty("margin", "0"), e?.active))
       return e.cleanup;
-    let r = new y(t),
-      a = new A(t),
-      o = new v(t);
-    (o.register(I(b)), o.register(C(a)));
-    let i =
+    let r = new R(t),
+      a = new M(t),
+      o = G(r, a),
+      i = new v(t, o),
+      s = new b(t);
+    (s.register(W(I)), s.register(H(r)), s.register(B(a)));
+    let l =
         n.enableSocket === !1
           ? null
-          : (n.socketManager ?? new g(t).initialize()),
-      s = new E({ ...n, targetWindow: t, socketManager: i }, o, r),
-      l = Object.freeze({
-        account: r.createFacade(),
-        avatar: a.createFacade(),
-        shell: s.createDebugFacade(),
-        modules: o.createFacade(),
-        ...(i ? { socket: i.createDebugFacade() } : {}),
+          : (n.socketManager ?? new p(t).initialize()),
+      c = new U({ ...n, targetWindow: t, socketManager: l }, s, i),
+      h = Object.freeze({
+        account: i.createFacade(),
+        shell: c.createDebugFacade(),
+        modules: s.createFacade(),
+        ...(l ? { socket: l.createDebugFacade() } : {}),
       }),
-      c = {
+      u = {
         active: !0,
-        controller: s,
-        modules: o,
-        facade: l,
+        controller: c,
+        modules: s,
+        facade: h,
         cleanup: () => {
-          c.active &&
-            ((c.active = !1),
-            s.cleanup(),
-            t.DrawariaExtension === l && delete t.DrawariaExtension,
-            delete t[L]);
+          u.active &&
+            ((u.active = !1),
+            c.cleanup(),
+            t.DrawariaExtension === h && delete t.DrawariaExtension,
+            delete t[O]);
         },
       };
-    ((t[L] = c), (t.DrawariaExtension = l), s.initialize());
-    let h = ie(t, s) ? null : se(t);
-    return (h && s.navigate(h), c.cleanup);
+    ((t[O] = u), (t.DrawariaExtension = h), c.initialize());
+    let A = we(t, c) ? null : ye(t);
+    return (A && c.navigate(A), u.cleanup);
   }
-  function oe(n = {}) {
-    return et(n);
+  function me(n = {}) {
+    return at(n);
   }
-  function ie(n, t) {
+  function we(n, t) {
     let e = new URL(n.location.href),
       r = e.searchParams.get(S);
     if (!r) return !1;
@@ -1800,7 +2027,7 @@ var DrawariaExtensionBundle = (() => {
         !1
       );
     }
-    return !u(o, n.location.href) || o.origin !== n.location.origin
+    return !d(o, n.location.href) || o.origin !== n.location.origin
       ? (n.history.replaceState({ drawariaShell: !0 }, n.document.title, a), !1)
       : (n.history.replaceState(
           { drawariaShell: !0 },
@@ -1810,31 +2037,31 @@ var DrawariaExtensionBundle = (() => {
         t.navigate(o, { historyMode: "none" }),
         !0);
   }
-  function se(n) {
+  function ye(n) {
     let t = new URL(n.location.href);
     return t.searchParams.has(S)
       ? null
       : /^\/rcon(?:\/.*)?$/u.test(t.pathname)
         ? new URL("/", t)
-        : u(t, t)
+        : d(t, t)
           ? t
           : new URL("/", t);
   }
-  function le(n) {
+  function Se(n) {
     try {
       if (n.parent === n) return !1;
-      let t = n.parent[L];
+      let t = n.parent[O];
       return t?.active === !0 && t.controller.frame?.contentWindow === n;
     } catch {
       return !1;
     }
   }
   typeof window < "u" &&
-    (et(),
+    (at(),
     window?.DrawariaExtension?.modules.register({
       id: "avatar-image-patcher",
       route: () => !1,
       mount: () => {},
     }));
-  return Ct(ce);
+  return Ht(Ae);
 })();
