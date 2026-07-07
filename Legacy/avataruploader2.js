@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Avatar Uploader
 // @namespace    https://drawaria.online/profile/?uid=63196790-c7da-11ec-8266-c399f90709b7
-// @version      2.1.0
+// @version      3.3.0
 // @description  A simple Avatar Uploader
 // @author       ᴄᴜʙᴇ
 // @match        https://*.drawaria.online/
